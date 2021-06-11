@@ -88,10 +88,10 @@
             var url1 = 'fetch_frag_shader.js';
             var url2 = 'fetch_vert_shader.js';
 
-            fetch(url1)
-                .then(response => ft = response.text());
-            fetch(url2)
-                .then(response => vt = response.text());
+            ft = fetch(url1)
+                .then(response => response.text());
+            vt = fetch(url2)
+                .then(response => response.text());
 
             if (ft == null || vt == null) {
                 alert("Could not download shaders");
