@@ -231,8 +231,8 @@
 
         function mouseMove(e) {
             if (flag) {
-                delx = e.clientX - oldx;
-                dely = e.clientY - oldy;
+                delx += e.clientX - oldx;
+                dely += e.clientY - oldy;
                 oldx = e.clientX;
                 oldy = e.clientY;
             }
