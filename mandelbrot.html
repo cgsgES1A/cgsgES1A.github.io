@@ -167,8 +167,8 @@
             checkers_cell_width = 30;
             delx = 250;
             dely = 250;
-            oldx = 500;
-            oldy = 500;
+            oldx = 0;
+            oldy = 0;
             document.getElementById('input_checkers_cell_width').value = checkers_cell_width;
             document.getElementById('input_zoom_value').value = zoom_value;
 
@@ -226,8 +226,8 @@
 
         function mouseMove(e) {
             if (flag) {
-                delx = oldx - e.clientX;
-                dely = oldy - e.clientY;
+                delx = e.clientX - oldx;
+                dely = e.clientY - oldy;
                 oldx = e.clientX;
                 oldy = e.clientY;
             }
@@ -250,7 +250,7 @@
         onkeyup="update_checkers_cell_width()"><br>
     <br />
 
-    <label for="input_zoom_value"> zooooooom value</label> <input type="text" id="input_zoom_value"
+    <label for="input_zoom_value"> zoooooom value</label> <input type="text" id="input_zoom_value"
         onkeyup="update_zoom_value()"><br>
 </body>
 
