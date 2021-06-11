@@ -84,8 +84,19 @@
         var shaderProgram;
 
         function initShaders() {
-            var fragmentShader = getShader(frag_text, gl, "shader-fs");
-            var vertexShader = getShader(vert_text, gl, "shader-vs");
+            var url1 = 'fetch_frag_shader.js';
+            var url2 = 'fetch_vert_shader.js';
+            var response1 = await fetch(url1);
+            var response2 = await fetch(url2);
+            var ft = await response1.text();
+            var vt = await response2.text();
+
+            if (ft == null || vt == null) {
+                alert("Could not download shaders");
+            }
+
+            var fragmentShader = getShader(ft, gl, "shader-fs");
+            var vertexShader = getShader(vt, gl, "shader-vs");
 
             shaderProgram = gl.createProgram();
             gl.attachShader(shaderProgram, vertexShader);
