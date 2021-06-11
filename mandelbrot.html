@@ -9,7 +9,7 @@
         var gl;
         var checkers_cell_width;
         var zoom_value;
-        var delx, dely;
+        var delx, dely, oldx, oldy;
         var frag_text = `#version 300 es
     precision mediump float;
 
@@ -181,6 +181,8 @@
             checkers_cell_width = 30;
             delx = 250;
             dely = 250;
+            oldx = 0;
+            oldy = 0;
             document.getElementById('input_checkers_cell_width').value = checkers_cell_width;
 
             var xmlhttp = new XMLHttpRequest();
@@ -229,8 +231,10 @@
 
         function mouseMove(e) {
             if (flag) {
-                delx = e.clientX;
-                dely = e.clientY;
+                delx = e.clientX - oldx;
+                dely = e.clientY - oldy;
+                oldx = e.clientX;
+                oldy = e.clientY;
             }
         }
         function mouseDown() {
