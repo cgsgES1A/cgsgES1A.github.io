@@ -99,8 +99,8 @@
                 alert("Could not download shaders");
             }
 
-            var fragmentShader = getShader(ft, gl, "shader-fs");
-            var vertexShader = getShader(vt, gl, "shader-vs");
+            var fragmentShader = getShader(frag_text, gl, "shader-fs");
+            var vertexShader = getShader(vert_text, gl, "shader-vs");
 
             shaderProgram = gl.createProgram();
             gl.attachShader(shaderProgram, vertexShader);
