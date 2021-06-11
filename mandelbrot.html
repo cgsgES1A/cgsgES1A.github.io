@@ -234,8 +234,6 @@
         document.getElementById("wegl-canvas").addEventListener("mousemove", mouseMove);
         document.getElementById("wegl-canvas").addEventListener("wheel", mouseWheel);
 
-        document.getElementById("input_checkers_cell_width").style = "background-color:MediumPurple";
-
         function mouseMove(e) {
             if (flag) {
                 delx += e.clientX - oldx;
@@ -262,8 +260,9 @@
 
     <br />
 
-    <label for="input_checkers_cell_width"> iteration number</label> <input type="text" id="input_checkers_cell_width"
-        onkeyup="update_checkers_cell_width()"><br>
+    <label for="input_checkers_cell_width" style="background-color:MediumPurple"> iteration number</label> <input
+        type="text" id="input_checkers_cell_width" onkeyup="update_checkers_cell_width()"><br>
+
 </body>
 
 </html>
