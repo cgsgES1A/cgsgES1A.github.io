@@ -46,6 +46,8 @@
         gl_Position = vec4(aVertexPosition, 1.0);
     }`;
 
+        var color;
+
         function initGL(canvas) {
             try {
                 gl = canvas.getContext("webgl2");
@@ -247,8 +249,10 @@
             flag = 0;
         }
         function mouseWheel(e) {
-            e = e || window.event;
-            zoom_value = e.deltaY / 100;
+            if (e.deltaY > 300)
+                zoom_value += e.deltaY / 700;
+            if (e.deltaY < 301)
+                zoom_value -= e.deltaY / 700;
         }
     </script>
 
