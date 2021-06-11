@@ -250,9 +250,9 @@
         }
         function mouseWheel(e) {
             if (e.deltaY > 300)
-                zoom_value += e.deltaY / 700;
+                zoom_value *= 1.2;
             if (e.deltaY < 301)
-                zoom_value -= e.deltaY / 700;
+                zoom_value /= 1.2;
         }
     </script>
 
@@ -261,9 +261,6 @@
     <label for="input_checkers_cell_width"> iteration number</label> <input type="text" id="input_checkers_cell_width"
         onkeyup="update_checkers_cell_width()"><br>
     <br />
-
-    <label for="input_zoom_value"> zoooooom value</label> <input type="text" id="input_zoom_value"
-        onkeyup="update_zoom_value()"><br>
 </body>
 
 </html>
