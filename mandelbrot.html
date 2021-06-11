@@ -240,10 +240,10 @@
             flag = 0;
         }
         function mouseWheel(e) {
-            if (e.deltaY > 300)
+            if (e.deltaY >= 0)
                 zoom_value *= 1.2;
-            if (e.deltaY < 301)
-                zoom_value *= -1.2;
+            if (e.deltaY < 0)
+                zoom_value /= 1.2;
         }
     </script>
 
