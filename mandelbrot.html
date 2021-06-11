@@ -86,11 +86,11 @@
         function initShaders() {
             var url1 = 'fetch_frag_shader.js';
             var url2 = 'fetch_vert_shader.js';
-            var response1 = await fetch(url1);
-            var response2 = await fetch(url2);
-            var ft = await response1.text();
-            var vt = await response2.text();
 
+            fetch(url1)
+                .then(response => ft = response.text());
+            fetch(url2)
+                .then(response => vt = response.text());
 
             if (ft == null || vt == null) {
                 alert("Could not download shaders");
