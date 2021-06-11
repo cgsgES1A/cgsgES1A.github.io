@@ -208,8 +208,13 @@
             data = document.getElementById('input_checkers_cell_width').value;
 
             checkers_cell_width = parseInt(data);
-            if (isNaN(checkers_cell_width))
+            if (isNaN(checkers_cell_width)) {
                 checkers_cell_width = 1;
+                alert("ЫЫЫ, это не число!!!");
+                document.getElementById("input_checkers_cell_width").style = "background-color:RebeccaPurple";
+            }
+            else
+                document.getElementById("input_checkers_cell_width").style = "background-color:MediumPurple";
         }
     </script>
 
