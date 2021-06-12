@@ -116,15 +116,15 @@
         setInterval(function () {
             document.getElementById(27 + first_day).innerHTML = 28;
         }, 10);
-        if (NumOfDays > 28) {
+        if (NumOfDays[month] > 28) {
             setInterval(function () {
                 document.getElementById(28 + first_day).innerHTML = 29;
             }, 10);
-            if (NumOfDays > 29) {
+            if (NumOfDays[month] > 29) {
                 setInterval(function () {
                     document.getElementById(29 + first_day).innerHTML = 30;
                 }, 10);
-                if (NumOfDays > 30)
+                if (NumOfDays[month] > 30)
                     setInterval(function () {
                         document.getElementById(30 + first_day).innerHTML = 31;
                     }, 10);
