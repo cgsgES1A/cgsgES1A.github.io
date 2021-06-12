@@ -30,8 +30,9 @@
         var i = 0;
 
         while (i < 3) {
-            alert(i);
-            i++;
+            setInterval(function () {
+                document.getElementById(0 + first_day).innerHTML = 0 + 1;
+            }, 10);
         }
         /*
                 for (var i = 0; i < NumOfDays[month]; i++) {
@@ -39,13 +40,13 @@
                         document.getElementById(i + first_day).innerHTML = i + 1;
                     }, 10);
                 }
-        */
+        *
         setInterval(function () {
             document.getElementById(0 + first_day).innerHTML = 0 + 1;
         }, 10);
         setInterval(function () {
             document.getElementById(1 + first_day).innerHTML = 1 + 1;
-        }, 10);
+        }, 10);*/
     </script>
 
     <div id="current_date_time_block"></div>
