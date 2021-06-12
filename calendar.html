@@ -15,16 +15,18 @@
 <body>
     <script>
         var current_datetime = new Date();
-        var day = zero_first_format(current_datetime.getDate());
-        var month = zero_first_format(current_datetime.getMonth() + 1);
+        var day = current_datetime.getDate();
+        var month = current_datetime.getMonth();
         var year = current_datetime.getFullYear();
-        var hours = zero_first_format(current_datetime.getHours());
-        var minutes = zero_first_format(current_datetime.getMinutes());
-        var seconds = zero_first_format(current_datetime.getSeconds());
-        var ind = '1';
+        var hours = current_datetime.getHours();
+        var minutes = current_datetime.getMinutes();
+        var seconds = current_datetime.getSeconds();
+        var day_week = current_datetime.getDay();
+        if (day_week == 0)
+            day_week = 7;
         var Shift = [6, 9, 2, 5, 7, 3, 5, 8, 4, 6, 9, 4];
         var NumOfDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-        var first_day = (1 + Shift[month - 1] + year % 4 + 1) % 7;
+        var first_day = day_week - (day - 1) % 7;
 
 
         function zero_first_format(value) {
