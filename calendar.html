@@ -39,7 +39,7 @@
             return day + "." + month + "." + year + " " + hours + ":" + minutes + ":" + seconds;
         }
 
-        for (var i = 0; i < NumOfDays[month - 1]; i++) {
+        for (var i = 0; i < NumOfDays[month]; i++) {
             setInterval(function () {
                 document.getElementById(i + first_day).innerHTML = i + 1;
             }, 10);
