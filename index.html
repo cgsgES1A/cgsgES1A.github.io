@@ -3,16 +3,35 @@
 <head>
     <title>My projects)</title>
 
-    <script type="text/javascript" src="glMatrix-0.9.5.min.js"></script>
+    <style>
+        button:hover {
+            color: MediumPurple;
+        }
 
+        h6 {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            padding: 10px;
+        }
+    </style>
 </head>
-
 
 <body onload="webGLStart();">
     <h1> My projects) </h1>
     <hr color=MediumPurple size="4">
+    <p><img src="https://secure.gravatar.com/avatar/84f947d12ceee2d3dc956c02d23f9b5f" width="50" height="50"
+            alt="Пример"></p>
     <br><br>
-    <button onclick="window.location.href = 'https://cgsgES1A.github.io/mandelbrot.html';">Mandelbrot</button>
+
+    <table>
+        <tr>
+            <td><button class="button"
+                    onclick="window.location.href = 'https://cgsgES1A.github.io/mandelbrot.html';">Mandelbrot</button>
+            </td>
+        </tr>
+    </table>
+    <h6>I am footer... Footer and anything else... </h6>
 </body>
 
 </html>
