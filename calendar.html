@@ -31,7 +31,7 @@
 
         while (i < NumOfDays[month]) {
             setInterval(function () {
-                document.getElementById(i + first_day).innerHTML = i + 1;
+                document.getElementById((i + first_day).toString()).innerHTML = i + 1;
             }, 10);
             i++;
         }
