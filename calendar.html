@@ -50,7 +50,7 @@
             month = parseInt(data) - 1;
             if (isNaN(month))
                 month = current_datetime.getMonth();
-            //first_day = (first_day_year + Shift[month] + 1) % 7;
+            first_day = (first_day_year + Shift[month] + 1) % 7;
         }
         function update_year() {
             data = document.getElementById('input_year').value;
