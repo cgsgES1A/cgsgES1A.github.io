@@ -26,28 +26,110 @@
             day_week = 7;
         var Shift = [6, 9, 2, 5, 7, 3, 5, 8, 4, 6, 9, 4];
         var NumOfDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-        var first_day = day_week - (day - 1) % 7;
-        var i = 0;
-
-        while (i < 3) {
-            setInterval(function () {
-                document.getElementById(i + first_day).innerHTML = 0 + 1;
-            }, 10);
-            i++;
+        if (year % 4 == 0 && year % 100 != 0) {
+            NumOfDays[1]++;
         }
-        /*
-                for (var i = 0; i < NumOfDays[month]; i++) {
-                    setInterval(function () {
-                        document.getElementById(i + first_day).innerHTML = i + 1;
-                    }, 10);
-                }
-        *
+        var first_day = day_week - (day - 1) % 7;
+
+        /* Temporaty version (uncorrect work with using while or for) */
         setInterval(function () {
-            document.getElementById(0 + first_day).innerHTML = 0 + 1;
+            document.getElementById(0 + first_day).innerHTML = 1;
         }, 10);
         setInterval(function () {
-            document.getElementById(1 + first_day).innerHTML = 1 + 1;
-        }, 10);*/
+            document.getElementById(1 + first_day).innerHTML = 2;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 3;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 4;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 5;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 6;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 7;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 8;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 9;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 10;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(0 + first_day).innerHTML = 11;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 12;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 13;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 14;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 15;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 16;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 17;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 18;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 19;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 20;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(0 + first_day).innerHTML = 21;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 22;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 23;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 24;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 25;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 26;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 27;
+        }, 10);
+        setInterval(function () {
+            document.getElementById(1 + first_day).innerHTML = 28;
+        }, 10);
+        if (NumOfDays > 28) {
+            setInterval(function () {
+                document.getElementById(1 + first_day).innerHTML = 29;
+            }, 10);
+            if (NumOfDays > 29) {
+                setInterval(function () {
+                    document.getElementById(1 + first_day).innerHTML = 30;
+                }, 10);
+                if (NumOfDays > 30)
+                    setInterval(function () {
+                        document.getElementById(0 + first_day).innerHTML = 31;
+                    }, 10);
+            }
+        }
     </script>
 
     <div id="current_date_time_block"></div>
