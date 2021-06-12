@@ -21,7 +21,7 @@
         var hours;
         var minutes;
         var seconds;
-        var ind = 'aaa';
+        var ind = '1';
         var Shift = [6, 9, 2, 5, 7, 3, 5, 8, 4, 6, 9, 4];
         var NumOfDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         var first_day = (1 + Shift[month - 1] + year % 4 + 1) % 7;
@@ -56,7 +56,7 @@
         }, 10);
 
         setInterval(function () {
-            document.getElementById('aaa').innerHTML = "A";
+            document.getElementById(ind).innerHTML = "A";
         }, 1000);
     </script>
 
