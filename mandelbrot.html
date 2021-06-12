@@ -10,41 +10,6 @@
         var checkers_cell_width;
         var zoom_value;
         var delx, dely, oldx, oldy;
-        var frag_text = `#version 300 es
-    precision mediump float;
-
-    uniform float cell_width;
-    uniform float zoom;
-    uniform float dx;
-    uniform float dy;
-
-    out vec4 FragColor;
-
-    void main(void)
-    {
-        float tmp = zoom;
-        float xs = gl_FragCoord.x - dx + 250.0, ys = gl_FragCoord.y + dy - 250.0;        
-        float a1 = xs * tmp * 2.0 / 500.0 - tmp, b1 = ys * tmp * 2.0 / 500.0 - tmp, a = a1, b = b1 , an = a1, bn = b1;
-        float n = 0.0;
-
-        while (n < cell_width && a * a + b * b < 4.0) {
-            an = a * a - b * b + a1, bn = 2.0 * a * b + b1;
-            a = an, b = bn;
-            n += 1.0;
-        }
-        n /= cell_width;
-        FragColor = vec4(n / 3.0 + cell_width / 100.0, n * 2.0, n * 5.0 + cell_width / 50.0, 1.0);
-    }`;
-        var vert_text = `#version 300 es
-    in vec3 aVertexPosition;
-
-    uniform mat4 uMVMatrix;
-    uniform mat4 uPMatrix;
-
-    void main(void)
-    {
-        gl_Position = vec4(aVertexPosition, 1.0);
-    }`;
 
         var color;
 
@@ -83,45 +48,85 @@
             return shader;
         }
 
+        function drawScene() {
+            gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+            mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
+
+            mat4.identity(mvMatrix);
+
+            mat4.translate(mvMatrix, [-1.5, 0.0, -7.0]);
+
+            mat4.translate(mvMatrix, [3.0, 0.0, 0.0]);
+            gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
+            gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, squareVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+            setMatrixUniforms();
+            gl.drawArrays(gl.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems);
+        }
+
+        function tick() {
+            window.requestAnimationFrame(tick);
+            drawScene();
+        }
+
         var shaderProgram;
 
         function initShaders() {
             var ft, vt;
             var url1 = 'fetch_frag_shader.js';
             var url2 = 'fetch_vert_shader.js';
+            var fragmentShader;
+            var vertexShader;
 
-            ft = fetch(url1)
-                .then(response => alert(response.text));
-            vt = fetch(url2)
-                .then(response => response.text());
+            fetch(url1)
+                .then(response => {
+                    return response.text();
+                })
+                .then(fragt => {
+                    if (fragt == null) {
+                        alert("Could not download shaders");
+                    }
+                    shaderProgram = gl.createProgram();
 
-            if (ft == null || vt == null) {
-                alert("Could not download shaders");
-            }
+                    fragmentShader = getShader(fragt, gl, "shader-fs");
+                    gl.attachShader(shaderProgram, fragmentShader);
+                });
+            fetch(url2)
+                .then(response => {
+                    return response.text();
+                })
+                .then(vertt => {
+                    if (vertt == null) {
+                        alert("Could not download shaders");
+                    }
+                    vertexShader = getShader(vertt, gl, "shader-vs");
+                    gl.attachShader(shaderProgram, vertexShader);
 
-            var fragmentShader = getShader(frag_text, gl, "shader-fs");
-            var vertexShader = getShader(vert_text, gl, "shader-vs");
+                    gl.linkProgram(shaderProgram);
 
-            shaderProgram = gl.createProgram();
-            gl.attachShader(shaderProgram, vertexShader);
-            gl.attachShader(shaderProgram, fragmentShader);
-            gl.linkProgram(shaderProgram);
+                    if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+                        alert("Could not initialise shaders");
+                    }
 
-            if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-                alert("Could not initialise shaders");
-            }
+                    gl.useProgram(shaderProgram);
 
-            gl.useProgram(shaderProgram);
+                    shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+                    gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
 
-            shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-            gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+                    shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
+                    shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
+                    shaderProgram.cell_width_uniform = gl.getUniformLocation(shaderProgram, "cell_width");
+                    shaderProgram.zoom_uniform = gl.getUniformLocation(shaderProgram, "zoom");
+                    shaderProgram.dx_uniform = gl.getUniformLocation(shaderProgram, "dx");
+                    shaderProgram.dy_uniform = gl.getUniformLocation(shaderProgram, "dy");
 
-            shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
-            shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
-            shaderProgram.cell_width_uniform = gl.getUniformLocation(shaderProgram, "cell_width");
-            shaderProgram.zoom_uniform = gl.getUniformLocation(shaderProgram, "zoom");
-            shaderProgram.dx_uniform = gl.getUniformLocation(shaderProgram, "dx");
-            shaderProgram.dy_uniform = gl.getUniformLocation(shaderProgram, "dy");
+                    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+                    gl.enable(gl.DEPTH_TEST);
+
+                    drawScene();
+                    tick();
+                });
         }
 
 
@@ -153,29 +158,6 @@
             squareVertexPositionBuffer.numItems = 4;
         }
 
-
-        function drawScene() {
-            gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
-            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-            mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
-
-            mat4.identity(mvMatrix);
-
-            mat4.translate(mvMatrix, [-1.5, 0.0, -7.0]);
-
-            mat4.translate(mvMatrix, [3.0, 0.0, 0.0]);
-            gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
-            gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, squareVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
-            setMatrixUniforms();
-            gl.drawArrays(gl.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems);
-        }
-
-        function tick() {
-            window.requestAnimationFrame(tick);
-            drawScene();
-        }
-
         function webGLStart() {
             zoom_value = 3;
             checkers_cell_width = 30;
@@ -194,14 +176,8 @@
 
             var canvas = document.getElementById("wegl-canvas");
             initGL(canvas);
-            initShaders();
             initBuffers();
-
-            gl.clearColor(0.0, 0.0, 0.0, 1.0);
-            gl.enable(gl.DEPTH_TEST);
-
-            drawScene();
-            tick();
+            initShaders();
         }
 
         function update_checkers_cell_width() {
@@ -242,12 +218,12 @@
                 oldy = e.clientY;
             }
         }
-        function mouseDown() {
+        function mouseDown(e) {
             flag = 1;
             oldx = e.clientX;
             oldy = e.clientY;
         }
-        function mouseUp() {
+        function mouseUp(e) {
             flag = 0;
         }
         function mouseWheel(e) {
