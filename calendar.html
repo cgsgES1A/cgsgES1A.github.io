@@ -33,10 +33,12 @@
         }
 
         setInterval(function () {
-            document.getElementById('current_date_time_block').innerHTML = "A";
+            document.getElementById('current_date_time_block').innerHTML = "date_time()";
         }, 1000);
 
-        document.getElementById('aaa').innerHTML = "A";
+        setInterval(function () {
+            document.getElementById('aaa').innerHTML = "date_time()";
+        }, 1000);
     </script>
 
     <div id="current_date_time_block"></div>
