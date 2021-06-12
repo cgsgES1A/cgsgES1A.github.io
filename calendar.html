@@ -18,12 +18,13 @@
 
             function init() {
                 var days = 0;
-
                 current_datetime = new Date();
                 day = current_datetime.getDate();
                 month = current_datetime.getMonth();
                 year = current_datetime.getFullYear();
                 day_week = current_datetime.getDay();
+                document.getElementById('input_month').value = month;
+                document.getElementById('input_year').value = year;
                 if (day_week == 0)
                     day_week = 7;
             }
@@ -43,6 +44,21 @@
 
 <body onload="init();">
     <script>
+        function update_month() {
+            data = document.getElementById('input_month').value;
+
+            month = parseInt(data) - 1;
+            if (isNaN(month))
+                month = current_datetime.getMonth();
+            first_day = (first_day_year + Shift[month] + 1) % 7;
+        }
+        function update_year() {
+            data = document.getElementById('input_year').value;
+
+            year = parseInt(data);
+            if (isNaN(year))
+                year = current_datetime.getFullYear();
+        }
         /* Temporaty version (uncorrect work with using while or for) */
         setInterval(function () {
             document.getElementById(0 + first_day).innerHTML = 1;
@@ -144,22 +160,6 @@
         }
 
         //document.getElementById(13).style = "background-color:MediumPurple";
-
-        function update_month() {
-            data = document.getElementById('input_month').value;
-
-            month = parseInt(data) - 1;
-            if (isNaN(month))
-                month = current_datetime.getMonth();
-            first_day = (first_day_year + Shift[month] + 1) % 7;
-        }
-        function update_year() {
-            data = document.getElementById('input_year').value;
-
-            year = parseInt(data);
-            if (isNaN(year))
-                year = current_datetime.getFullYear();
-        }
     </script>
 
     <div id="current_date_time_block"></div>
