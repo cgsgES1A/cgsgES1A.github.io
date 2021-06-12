@@ -3,34 +3,46 @@
 <head>
     <title>Calendar</title>
 
-    <script type="text/javascript" src="glMatrix-0.9.5.min.js"></script>
-
     <script type="text/javascript">
+        var current_datetime;
+        var day;
+        var month;
+        var year;
+        var day_week;
+        var Shift = [6, 9, 2, 5, 7, 3, 5, 8, 4, 6, 9, 4];
+        var NumOfDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        var first_day;
+        var first_day_year;
+        if (year % 4 == 0 && year % 100 != 0) {
+            NumOfDays[1]++;
+
+            function init() {
+                var days = 0;
+
+                current_datetime = new Date();
+                day = current_datetime.getDate();
+                month = current_datetime.getMonth();
+                year = current_datetime.getFullYear();
+                day_week = current_datetime.getDay();
+                if (day_week == 0)
+                    day_week = 7;
+            }
+            first_day = day_week - (day - 1) % 7;
+
+            for (var i = 0; i < month; i++)
+                days += NumOfDays[i];
+            first_day_year = day_week - days % 7;
+            if (first_day_year < 0)
+                first_day_year = 7 - first_day_year;
+        }
     </script>
 
 
 </head>
 
 
-<body>
+<body onload="init();">
     <script>
-        var current_datetime = new Date();
-        var day = current_datetime.getDate();
-        var month = current_datetime.getMonth();
-        var year = current_datetime.getFullYear();
-        var hours = current_datetime.getHours();
-        var minutes = current_datetime.getMinutes();
-        var seconds = current_datetime.getSeconds();
-        var day_week = current_datetime.getDay();
-        if (day_week == 0)
-            day_week = 7;
-        var Shift = [6, 9, 2, 5, 7, 3, 5, 8, 4, 6, 9, 4];
-        var NumOfDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-        if (year % 4 == 0 && year % 100 != 0) {
-            NumOfDays[1]++;
-        }
-        var first_day = day_week - (day - 1) % 7;
-
         /* Temporaty version (uncorrect work with using while or for) */
         setInterval(function () {
             document.getElementById(0 + first_day).innerHTML = 1;
@@ -131,7 +143,23 @@
             }
         }
 
-        document.getElementById(13).style = "background-color:MediumPurple";
+        //document.getElementById(13).style = "background-color:MediumPurple";
+
+        function update_month() {
+            data = document.getElementById('input_month').value;
+
+            month = parseInt(data) - 1;
+            if (isNaN(month))
+                month = current_datetime.getMonth();
+            first_day = (first_day_year + Shift[month] + 1) % 7;
+        }
+        function update_year() {
+            data = document.getElementById('input_year').value;
+
+            year = parseInt(data);
+            if (isNaN(year))
+                year = current_datetime.getFullYear();
+        }
     </script>
 
     <div id="current_date_time_block"></div>
@@ -193,6 +221,13 @@
             <td id="42">.</td>
         </tr>
     </table>
+
+    <br>
+    <label for="input_month"> month</label> <input type="text" id="input_month" onkeyup="update_month()"
+        style="background-color:MediumPurple">
+    <br>
+    <label for="input_year"> year</label> <input type="text" id="input_year" onkeyup="update_year()"
+        style="background-color:MediumPurple">
 </body>
 
 </html>
