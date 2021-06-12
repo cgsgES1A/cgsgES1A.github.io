@@ -44,6 +44,7 @@
 
 <body onload="init();">
     <script>
+        var oldyear = year;
         function update_month() {
             data = document.getElementById('input_month').value;
 
@@ -53,11 +54,20 @@
             first_day = (first_day_year + Shift[month] + 1) % 7;
         }
         function update_year() {
+            var years;
             data = document.getElementById('input_year').value;
 
+            oldyear = year;
             year = parseInt(data);
             if (isNaN(year))
                 year = current_datetime.getFullYear();
+            for (var i = 0; i < abs(oldyear - year); i++) {
+                if ((min(oldyear, year) + i) % 4 == 0 && (min(oldyear, year) + i) % 100 != 0)
+                    years += 366;
+                else
+                    years += 365;
+            }
+            first_day_year = day_week - years % 7;
         }
         /* Temporaty version (uncorrect work with using while or for) */
         setInterval(function () {
