@@ -13,21 +13,21 @@
         var NumOfDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         var first_day;
         var first_day_year;
-        if (year % 4 == 0 && year % 100 != 0) {
+        if (year % 4 == 0 && year % 100 != 0)
             NumOfDays[1]++;
 
-            function init() {
-                var days = 0;
-                current_datetime = new Date();
-                day = current_datetime.getDate();
-                month = current_datetime.getMonth();
-                year = current_datetime.getFullYear();
-                day_week = current_datetime.getDay();
-                document.getElementById('input_month').value = month;
-                document.getElementById('input_year').value = year;
-                if (day_week == 0)
-                    day_week = 7;
-            }
+        function init() {
+            var days = 0;
+            current_datetime = new Date();
+            day = current_datetime.getDate();
+            month = current_datetime.getMonth();
+            year = current_datetime.getFullYear();
+            day_week = current_datetime.getDay();
+            document.getElementById('input_month').value = month;
+            document.getElementById('input_year').value = year;
+            if (day_week == 0)
+                day_week = 7;
+
             first_day = day_week - (day - 1) % 7;
 
             for (var i = 0; i < month; i++)
@@ -44,8 +44,6 @@
 
 <body onload="init();">
     <script>
-        first_day = 2;
-
         function update_month() {
             data = document.getElementById('input_month').value;
 
