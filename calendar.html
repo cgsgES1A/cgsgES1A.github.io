@@ -826,6 +826,9 @@
             month--;
 
             first_day = (first_day_year + Shift[month] + 1) % 7;
+            if (first_day == 0)
+
+                first_day = 7;
 
             document.getElementById('input_month').value = month + 1;
 
@@ -839,6 +842,10 @@
             month++;
 
             first_day = (first_day_year + Shift[month] + 1) % 7;
+
+            if (first_day == 0)
+
+                first_day = 7;
 
             document.getElementById('input_month').value = month + 1;
 
