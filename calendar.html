@@ -555,16 +555,9 @@
         }
 
 
-
-
-
         function update_month() {
 
             data = document.getElementById('input_month').value;
-
-
-
-
 
             month = parseInt(data) - 1;
 
@@ -578,7 +571,7 @@
 
                 first_day = 7;
 
-            reset();
+            init();
 
         }
 
@@ -587,10 +580,6 @@
             var years;
 
             data = document.getElementById('input_year').value;
-
-
-
-
 
             oldyear = year;
 
@@ -628,7 +617,7 @@
 
 
 
-            reset();
+            init();
 
         }
 
@@ -642,7 +631,7 @@
 
             document.getElementById('input_month').value = month + 1;
 
-            reset();
+            init();
 
         }
 
@@ -654,7 +643,7 @@
 
             document.getElementById('input_month').value = month + 1;
 
-            reset();
+            init();
 
         }
 
@@ -666,7 +655,7 @@
 
             if (year % 4 == 0 && year % 100 != 0)
 
-                NumOfDays[1]++;
+                NumOfDays[1] = 29;
 
             document.getElementById('input_month').value = month + 1;
 
@@ -677,7 +666,6 @@
 
 
             for (var i = 0; i < month; i++)
-
                 days += NumOfDays[i];
 
             first_day_year = first_day - days % 7;
@@ -686,17 +674,7 @@
 
                 first_day_year += 7;
 
-
-
-
-
             reset();
-
-
-
-
-
-
 
             /* Temporaty version (uncorrect work with using while or for) */
 
