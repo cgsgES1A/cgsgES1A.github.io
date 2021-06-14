@@ -8,8 +8,10 @@
     <script type="text/javascript">
 
         function search(text) {
-            var i = 0, j;
+            var i = 0, j, v;
             var n, k;
+            var num;
+            var A = [], L = [];
             alert(text);
 
             while (text[i] != '\n')
@@ -20,8 +22,23 @@
             while (text[i] != '\n')
                 i++;
             k = parseInt(text.slice(j, i));
+            i++;
             alert(n);
             alert(k);
+
+            for (v = 0; v < n; v++) {
+                num = parseInt(text.slice(i, i + k));
+                i += k + 1;
+                A.append(num);
+            }
+            for (i = 0; i < n; i++) {
+                if (A.indexOf(A[i], i + 1) == -1)
+                    L.append(A[i]);
+                else if (A.indexOf(A[A.indexOf(A[i], i + 1)], A.indexOf(A[i], i + 1) + 1) == -1)
+                    L.append(A[i]);
+            }
+
+            alert(L[0], L[1]);
         }
 
         function read() {
