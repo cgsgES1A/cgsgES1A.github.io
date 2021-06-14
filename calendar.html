@@ -1,273 +1,1046 @@
 <html>
 
+
+
+
+
 <head>
+
     <title>Calendar</title>
 
+
+
+
+
     <script type="text/javascript">
-        var current_datetime;
-        var day;
-        var month;
-        var year;
-        var day_week;
+
+        var current_datetime = new Date();
+
+        var day = current_datetime.getDate();
+
+        var month = current_datetime.getMonth();
+
+        var year = current_datetime.getFullYear();
+
+        var day_week = current_datetime.getDay() == 0 ? 7 : current_datetime.getDay();
+
         var Shift = [6, 9, 2, 5, 7, 3, 5, 8, 4, 6, 9, 4];
+
         var NumOfDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-        var first_day;
+
+        var first_day = day_week - (day - 1) % 7;
+
         var first_day_year;
-        if (year % 4 == 0 && year % 100 != 0)
-            NumOfDays[1]++;
+
+        var days = 0;
+
+        function reset() {
+
+            setInterval(function () {
+
+                document.getElementById(1).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(2).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(3).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(4).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(5).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(6).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(7).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(8).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(9).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(10).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(11).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(12).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(13).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(14).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(15).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(16).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(17).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(18).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(19).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(20).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(21).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(22).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(23).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(24).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(25).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(26).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(27).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(28).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(29).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(30).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(31).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(32).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(33).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(34).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(35).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(36).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(37).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(38).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(39).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(40).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(41).innerHTML = "";
+
+            }, 10000);
+
+            setInterval(function () {
+
+                document.getElementById(42).innerHTML = "";
+
+            }, 10000);
+
+
+
+            setInterval(function () {
+
+                document.getElementById(1).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(2).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(3).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(4).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(5).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(6).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(7).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(8).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(9).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(10).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(11).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(12).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(13).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(14).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(15).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(16).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(17).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(18).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(19).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(20).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(21).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(22).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(23).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(24).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(25).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(26).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(27).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(28).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(29).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(30).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(31).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(32).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(33).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(34).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(35).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(36).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(37).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(38).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(39).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(40).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(41).style = "background-color:Lavender";
+
+            }, 100);
+
+            setInterval(function () {
+
+                document.getElementById(42).style = "background-color:Lavender";
+
+            }, 100);
+
+
+
+            if (month == current_datetime.getMonth() && year == current_datetime.getFullYear())
+
+                setInterval(function () {
+
+                    document.getElementById(day + first_day - 1).style = "background-color:MediumPurple";
+
+                }, 1);
+
+        }
+
+
+
+
+
+        function update_month() {
+
+            data = document.getElementById('input_month').value;
+
+
+
+
+
+            month = parseInt(data) - 1;
+
+            if (isNaN(month))
+
+                month = current_datetime.getMonth();
+
+            first_day = (first_day_year + Shift[month] + 1) % 7;
+
+            if (first_day == 0)
+
+                first_day = 7;
+
+            reset();
+
+        }
+
+        function update_year() {
+
+            var years;
+
+            data = document.getElementById('input_year').value;
+
+
+
+
+
+            oldyear = year;
+
+            year = parseInt(data);
+
+            if (isNaN(year))
+
+                year = current_datetime.getFullYear();
+
+            for (var i = 0; i < abs(oldyear - year); i++) {
+
+                if ((min(oldyear, year) + i) % 4 == 0 && (min(oldyear, year) + i) % 100 != 0)
+
+                    years += 366;
+
+                else
+
+                    years += 365;
+
+            }
+
+            first_day_year -= years % 7;
+
+            if (first_day_year <= 0)
+
+                first_day_year += 7;
+
+            first_day = (first_day_year + Shift[1] + 1) % 7;
+
+            if (first_day == 0)
+
+                first_day = 7;
+
+
+
+
+
+            reset();
+
+        }
+
+
+
+        function previous() {
+
+            month--;
+
+            first_day = (first_day_year + Shift[month] + 1) % 7;
+
+            document.getElementById('input_month').value = month + 1;
+
+            reset();
+
+        }
+
+        function next() {
+
+            month++;
+
+            first_day = (first_day_year + Shift[month] + 1) % 7;
+
+            document.getElementById('input_month').value = month + 1;
+
+            reset();
+
+        }
+
+
+
+
 
         function init() {
-            var days = 0;
-            current_datetime = new Date();
-            day = current_datetime.getDate();
-            month = current_datetime.getMonth();
-            year = current_datetime.getFullYear();
-            day_week = current_datetime.getDay();
-            document.getElementById('input_month').value = month;
-            document.getElementById('input_year').value = year;
-            if (day_week == 0)
-                day_week = 7;
 
-            first_day = day_week - (day - 1) % 7;
+            if (year % 4 == 0 && year % 100 != 0)
+
+                NumOfDays[1]++;
+
+            document.getElementById('input_month').value = month + 1;
+
+            document.getElementById('input_year').value = year;
+
+
+
+
 
             for (var i = 0; i < month; i++)
-                days += NumOfDays[i];
-            first_day_year = day_week - days % 7;
-            if (first_day_year < 0)
-                first_day_year = 7 - first_day_year;
-        }
-    </script>
 
+                days += NumOfDays[i];
+
+            first_day_year = first_day - days % 7;
+
+            if (first_day_year < 0)
+
+                first_day_year += 7;
+
+
+
+
+
+            reset();
+
+
+
+
+
+            /* Temporaty version (uncorrect work with using while or for) */
+
+            setInterval(function () {
+
+                document.getElementById(0 + first_day).innerHTML = 1;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(1 + first_day).innerHTML = 2;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(2 + first_day).innerHTML = 3;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(3 + first_day).innerHTML = 4;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(4 + first_day).innerHTML = 5;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(5 + first_day).innerHTML = 6;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(6 + first_day).innerHTML = 7;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(7 + first_day).innerHTML = 8;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(8 + first_day).innerHTML = 9;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(9 + first_day).innerHTML = 10;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(10 + first_day).innerHTML = 11;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(11 + first_day).innerHTML = 12;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(12 + first_day).innerHTML = 13;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(13 + first_day).innerHTML = 14;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(14 + first_day).innerHTML = 15;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(15 + first_day).innerHTML = 16;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(16 + first_day).innerHTML = 17;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(17 + first_day).innerHTML = 18;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(18 + first_day).innerHTML = 19;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(19 + first_day).innerHTML = 20;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(20 + first_day).innerHTML = 21;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(21 + first_day).innerHTML = 22;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(22 + first_day).innerHTML = 23;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(23 + first_day).innerHTML = 24;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(24 + first_day).innerHTML = 25;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(25 + first_day).innerHTML = 26;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(26 + first_day).innerHTML = 27;
+
+            }, 10);
+
+            setInterval(function () {
+
+                document.getElementById(27 + first_day).innerHTML = 28;
+
+            }, 10);
+
+            if (NumOfDays[month] > 28) {
+
+                setInterval(function () {
+
+                    document.getElementById(28 + first_day).innerHTML = 29;
+
+                }, 10);
+
+                if (NumOfDays[month] > 29) {
+
+                    setInterval(function () {
+
+                        document.getElementById(29 + first_day).innerHTML = 30;
+
+                    }, 10);
+
+                    if (NumOfDays[month] > 30)
+
+                        setInterval(function () {
+
+                            document.getElementById(30 + first_day).innerHTML = 31;
+
+                        }, 10);
+
+                }
+
+            }
+
+        }
+
+    </script>
 
 </head>
 
 
+
+
+
 <body onload="init();">
-    <script>
-        var oldyear = year;
-        function update_month() {
-            data = document.getElementById('input_month').value;
 
-            month = parseInt(data) - 1;
-            if (isNaN(month))
-                month = current_datetime.getMonth();
-            first_day = (first_day_year + Shift[month] + 1) % 7;
-        }
-        function update_year() {
-            var years;
-            data = document.getElementById('input_year').value;
-
-            oldyear = year;
-            year = parseInt(data);
-            if (isNaN(year))
-                year = current_datetime.getFullYear();
-            for (var i = 0; i < abs(oldyear - year); i++) {
-                if ((min(oldyear, year) + i) % 4 == 0 && (min(oldyear, year) + i) % 100 != 0)
-                    years += 366;
-                else
-                    years += 365;
-            }
-            first_day_year = day_week - years % 7;
-        }
-        /* Temporaty version (uncorrect work with using while or for) */
-        setInterval(function () {
-            document.getElementById(0 + first_day).innerHTML = 1;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(1 + first_day).innerHTML = 2;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(2 + first_day).innerHTML = 3;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(3 + first_day).innerHTML = 4;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(4 + first_day).innerHTML = 5;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(5 + first_day).innerHTML = 6;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(6 + first_day).innerHTML = 7;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(7 + first_day).innerHTML = 8;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(8 + first_day).innerHTML = 9;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(9 + first_day).innerHTML = 10;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(10 + first_day).innerHTML = 11;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(11 + first_day).innerHTML = 12;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(12 + first_day).innerHTML = 13;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(13 + first_day).innerHTML = 14;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(14 + first_day).innerHTML = 15;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(15 + first_day).innerHTML = 16;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(16 + first_day).innerHTML = 17;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(17 + first_day).innerHTML = 18;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(18 + first_day).innerHTML = 19;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(19 + first_day).innerHTML = 20;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(20 + first_day).innerHTML = 21;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(21 + first_day).innerHTML = 22;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(22 + first_day).innerHTML = 23;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(23 + first_day).innerHTML = 24;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(24 + first_day).innerHTML = 25;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(25 + first_day).innerHTML = 26;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(26 + first_day).innerHTML = 27;
-        }, 10);
-        setInterval(function () {
-            document.getElementById(27 + first_day).innerHTML = 28;
-        }, 10);
-        if (NumOfDays[month] > 28) {
-            setInterval(function () {
-                document.getElementById(28 + first_day).innerHTML = 29;
-            }, 10);
-            if (NumOfDays[month] > 29) {
-                setInterval(function () {
-                    document.getElementById(29 + first_day).innerHTML = 30;
-                }, 10);
-                if (NumOfDays[month] > 30)
-                    setInterval(function () {
-                        document.getElementById(30 + first_day).innerHTML = 31;
-                    }, 10);
-            }
-        }
-        if (first_day > 1) {
-            setInterval(function () {
-                document.getElementById(1).innerHTML = ".";
-            }, 10);
-            if (first_day > 2) {
-                setInterval(function () {
-                    document.getElementById(2).innerHTML = ".";
-                }, 10);
-                if (first_day > 3) {
-                    setInterval(function () {
-                        document.getElementById(3).innerHTML = ".";
-                    }, 10);
-                    if (first_day > 4) {
-                        setInterval(function () {
-                            document.getElementById(4).innerHTML = ".";
-                        }, 10);
-                        if (first_day > 5) {
-                            setInterval(function () {
-                                document.getElementById(5).innerHTML = ".";
-                            }, 10);
-                            if (first_day > 6) {
-                                setInterval(function () {
-                                    document.getElementById(6).innerHTML = ".";
-                                }, 10);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        //document.getElementById(13).style = "background-color:MediumPurple";
-    </script>
-
-    <div id="current_date_time_block"></div>
-
-    <table border="2">
-        <tr>
-            <td id="1">.</td>
-            <td id="2">.</td>
-            <td id="3">.</td>
-            <td id="4">.</td>
-            <td id="5">.</td>
-            <td id="6">.</td>
-            <td id="7">.</td>
-        </tr>
-        <tr>
-            <td id="8">.</td>
-            <td id="9">.</td>
-            <td id="10">.</td>
-            <td id="11">.</td>
-            <td id="12">.</td>
-            <td id="13">.</td>
-            <td id="14">.</td>
-        </tr>
-        <tr>
-            <td id="15">.</td>
-            <td id="16">.</td>
-            <td id="17">.</td>
-            <td id="18"></td>
-            <td id="19">.</td>
-            <td id="20">.</td>
-            <td id="21">.</td>
-        </tr>
-        <tr>
-            <td id="22">.</td>
-            <td id="23">.</td>
-            <td id="24">.</td>
-            <td id="25">.</td>
-            <td id="26">.</td>
-            <td id="27">.</td>
-            <td id="28">.</td>
-        </tr>
-        <tr>
-            <td id="29">.</td>
-            <td id="30">.</td>
-            <td id="31">.</td>
-            <td id="32">.</td>
-            <td id="33">.</td>
-            <td id="34">.</td>
-            <td id="35">.</td>
-        </tr>
-        <tr>
-
-            <td id="36">.</td>
-            <td id="37">.</td>
-            <td id="38">.</td>
-            <td id="39">.</td>
-            <td id="40">.</td>
-            <td id="41">.</td>
-            <td id="42">.</td>
-        </tr>
-    </table>
-
-    <br>
     <label for="input_month"> month</label> <input type="text" id="input_month" onkeyup="update_month()"
-        style="background-color:MediumPurple">
+        style="background-color:Lavender">
+
     <br>
-    <label for="input_year"> year</label> <input type="text" id="input_year" onkeyup="update_year()"
-        style="background-color:MediumPurple">
+
+    <label for="input_year"> yeaaar</label> <input type="text" id="input_year" onkeyup="update_year()"
+        style="background-color:Lavender">
+
+    <br><br>
+
+
+
+
+
+    <button onclick="previous();">
+        < </button>
+
+            <button onclick="next();"> > </button>
+
+
+
+
+
+            <table border="2" bgcolor="Lavender">
+
+                <tr>
+
+                    <td id="1"></td>
+
+                    <td id="2"></td>
+
+                    <td id="3"></td>
+
+                    <td id="4"></td>
+
+                    <td id="5"></td>
+
+                    <td id="6"></td>
+
+                    <td id="7"></td>
+
+                </tr>
+
+                <tr>
+
+                    <td id="8"></td>
+
+                    <td id="9"></td>
+
+                    <td id="10"></td>
+
+                    <td id="11"></td>
+
+                    <td id="12"></td>
+
+                    <td id="13"></td>
+
+                    <td id="14"></td>
+
+                </tr>
+
+                <tr>
+
+                    <td id="15"></td>
+
+                    <td id="16"></td>
+
+                    <td id="17"></td>
+
+                    <td id="18"></td>
+
+                    <td id="19"></td>
+
+                    <td id="20"></td>
+
+                    <td id="21"></td>
+
+                </tr>
+
+                <tr>
+
+                    <td id="22"></td>
+
+                    <td id="23"></td>
+
+                    <td id="24"></td>
+
+                    <td id="25"></td>
+
+                    <td id="26"></td>
+
+                    <td id="27"></td>
+
+                    <td id="28"></td>
+
+                </tr>
+
+                <tr>
+
+                    <td id="29"></td>
+
+                    <td id="30"></td>
+
+                    <td id="31"></td>
+
+                    <td id="32"></td>
+
+                    <td id="33"></td>
+
+                    <td id="34"></td>
+
+                    <td id="35"></td>
+
+                </tr>
+
+                <tr>
+
+                    <td id="36"></td>
+
+                    <td id="37"></td>
+
+                    <td id="38"></td>
+
+                    <td id="39"></td>
+
+                    <td id="40"></td>
+
+                    <td id="41"></td>
+
+                    <td id="42"></td>
+
+                </tr>
+
+            </table>
+
 </body>
 
 </html>
