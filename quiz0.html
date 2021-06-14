@@ -8,14 +8,19 @@
     <script type="text/javascript">
 
         function search(text) {
-            var i = 0;
+            var i = 0, j;
             var n, k;
             alert(text);
 
             while (text[i] != '\n')
                 i++;
             n = parseInt(text.slice(0, i + 1));
+            j = i;
+            while (text[i] != '\n')
+                i++;
+            k = parseInt(text.slice(j + 2, i + 1));
             alert(n);
+            alert(k);
         }
 
         function read() {
