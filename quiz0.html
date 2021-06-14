@@ -12,6 +12,7 @@
             var n, k;
             var num;
             var A = [], L = [];
+            var x, y;
             alert(text);
 
             while (text[i] != '\n')
@@ -23,8 +24,6 @@
                 i++;
             k = parseInt(text.slice(j, i));
             i++;
-            alert(n);
-            alert(k);
 
             for (v = 0; v < n; v++) {
                 num = parseInt(text.slice(i, i + k));
@@ -38,8 +37,12 @@
                     L.push(A[i]);
             }
 
-            alert(L[0]);
-            alert(L[1]);
+            var s = "000000000" + L[0];
+            x = s.substr(s.length - 4);
+            s = "000000000" + L[1];
+            y = s.substr(s.length - 4);
+            alert("X: " + x);
+            alert("Y: " + y);
         }
 
         function read() {
