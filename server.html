@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF_8" />
+    <title>Sample hosted HTML</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <script type="text/javascript">
+        var nick, mess;
+
+        function update_nickname() {
+            data = document.getElementById('input_nickname').value;
+            nick = data;
+        }
+        function update_message() {
+            data = document.getElementById('input_message').value;
+            mess = data;
+        }
+
+        function submit_nick() {
+            fetch('/', {
+                method: 'POST',
+                body: nick
+            });
+
+            document.getElementById('input_nickname').value = "";
+        }
+        function submit_mess() {
+            ;
+        }
+
+    </script>
+</head>
+
+<body>
+
+    <script>
+        var getnick, getmess;
+
+        function get_nick() {
+            fetch('/', {
+                method: 'GET'
+            })
+                .then(response => {
+                    return response.text();
+                })
+                .then(text => {
+                    ;
+                });
+            alert("Debug");
+        }
+
+        setTimeout(function run() {
+            get_nick();
+            setTimeout(run, 5000);
+        }, 5000);
+    </script>
+
+    <p>This HTML is served from a file</p>
+
+    <br>
+    <label for="input_nickname"> nickname</label> <input type="text" id="input_nickname" onkeyup="update_nickname()"
+        style="background-color:lavenderblush">
+    <button onclick="submit_nick();"> Submit </button>
+
+    <br>
+    <label for="input_message"> messaage</label> <input type="text" id="input_message" onkeyup="update_message()"
+        style="background-color:lavenderblush">
+    <button onclick="submit_mess();"> Submit </button>
+</body>
+
+</html>
