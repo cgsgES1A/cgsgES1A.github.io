@@ -29,13 +29,13 @@
             for (v = 0; v < n; v++) {
                 num = parseInt(text.slice(i, i + k));
                 i += k + 1;
-                A.append(num);
+                A.push(num);
             }
             for (i = 0; i < n; i++) {
                 if (A.indexOf(A[i], i + 1) == -1)
-                    L.append(A[i]);
+                    L.push(A[i]);
                 else if (A.indexOf(A[A.indexOf(A[i], i + 1)], A.indexOf(A[i], i + 1) + 1) == -1)
-                    L.append(A[i]);
+                    L.push(A[i]);
             }
 
             alert(L[0], L[1]);
