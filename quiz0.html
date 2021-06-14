@@ -34,7 +34,7 @@
             for (i = 0; i < n; i++) {
                 if (A.indexOf(A[i], i + 1) == -1)
                     L.push(A[i]);
-                else if (A.indexOf(A[A.indexOf(A[i], i + 1)], A.indexOf(A[i], i + 1) + 1) == -1)
+                else if (A.indexOf(A[A.indexOf(A[i], i + 1)], A.indexOf(A[i], i + 1) + 1) == -1 && L == [])
                     L.push(A[i]);
             }
 
