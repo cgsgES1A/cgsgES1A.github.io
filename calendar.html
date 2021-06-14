@@ -94,7 +94,7 @@
         function update_year() {
             data = document.getElementById('input_year').value;
 
-            oldyear = year;
+            oldyear = current_datetime.getFullYear();
 
             year = parseInt(data);
 
@@ -114,7 +114,10 @@
 
             }
 
-            first_day_year -= years % 7;
+            if (oldyear > year)
+                first_day_year -= years % 7;
+            else
+                first_day_year += years % 7;
 
             if (first_day_year <= 0)
 
