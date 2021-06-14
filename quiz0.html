@@ -7,14 +7,20 @@
 
     <script type="text/javascript">
 
-        function print(a) {
-            alert(a);
+        function search(text) {
+            var i = 0;
+            var n, k;
+            alert(text);
+
+            while (text[i] != '\n')
+                i++;
+            n = slice(0, i + 1);
+            alert(n);
         }
 
         function read() {
-            var text;
             var url = 'quiz0_input.txt';
-            var i = 0;
+
             fetch(url)
                 .then(response => {
                     return response.text();
@@ -23,9 +29,7 @@
                     if (input == null) {
                         alert("Could not download input file");
                     }
-                    print(input);
-
-
+                    search(input);
                 });
         }
 
