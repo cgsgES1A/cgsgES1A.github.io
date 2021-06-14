@@ -19,8 +19,12 @@
                     if (input == null) {
                         alert("Could not download input file");
                     }
-                    alert(input);
+                    return input;
                 });
+        }
+
+        function search() {
+            alert(read());
         }
 
     </script>
@@ -29,7 +33,7 @@
 </head>
 
 
-<body onload="read();">
+<body onload="search();">
     <script>
     </script>
 </body>
