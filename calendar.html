@@ -555,129 +555,7 @@
         }
 
 
-        function update_month() {
-
-            data = document.getElementById('input_month').value;
-
-            month = parseInt(data) - 1;
-
-            if (isNaN(month))
-
-                month = current_datetime.getMonth();
-
-            first_day = (first_day_year + Shift[month] + 1) % 7;
-
-            if (first_day == 0)
-
-                first_day = 7;
-
-            init();
-
-        }
-
-        function update_year() {
-
-            var years;
-
-            data = document.getElementById('input_year').value;
-
-            oldyear = year;
-
-            year = parseInt(data);
-
-            if (isNaN(year))
-
-                year = current_datetime.getFullYear();
-
-            for (var i = 0; i < abs(oldyear - year); i++) {
-
-                if ((min(oldyear, year) + i) % 4 == 0 && (min(oldyear, year) + i) % 100 != 0)
-
-                    years += 366;
-
-                else
-
-                    years += 365;
-
-            }
-
-            first_day_year -= years % 7;
-
-            if (first_day_year <= 0)
-
-                first_day_year += 7;
-
-            first_day = (first_day_year + Shift[1] + 1) % 7;
-
-            if (first_day == 0)
-
-                first_day = 7;
-
-
-
-
-
-            init();
-
-        }
-
-
-
-        function previous() {
-
-            month--;
-
-            first_day = (first_day_year + Shift[month] + 1) % 7;
-
-            document.getElementById('input_month').value = month + 1;
-
-            init();
-
-        }
-
-        function next() {
-
-            month++;
-
-            first_day = (first_day_year + Shift[month] + 1) % 7;
-
-            document.getElementById('input_month').value = month + 1;
-
-            init();
-
-        }
-
-
-
-
-
-        function init() {
-
-            if (year % 4 == 0 && year % 100 != 0)
-
-                NumOfDays[1] = 29;
-
-            document.getElementById('input_month').value = month + 1;
-
-            document.getElementById('input_year').value = year;
-
-
-
-
-
-            for (var i = 0; i < month; i++)
-                days += NumOfDays[i];
-
-            first_day_year = first_day - days % 7;
-
-            if (first_day_year < 0)
-
-                first_day_year += 7;
-
-            reset();
-
-            /* Temporaty version (uncorrect work with using while or for) */
-
+        function set() {
             setInterval(function () {
 
                 document.getElementById(0 + first_day).innerHTML = 1;
@@ -876,6 +754,125 @@
 
         }
 
+        function update_month() {
+
+            data = document.getElementById('input_month').value;
+
+            month = parseInt(data) - 1;
+
+            if (isNaN(month))
+
+                month = current_datetime.getMonth();
+
+            first_day = (first_day_year + Shift[month] + 1) % 7;
+
+            if (first_day == 0)
+
+                first_day = 7;
+
+            reset();
+            set();
+
+        }
+
+        function update_year() {
+
+            var years;
+
+            data = document.getElementById('input_year').value;
+
+            oldyear = year;
+
+            year = parseInt(data);
+
+            if (isNaN(year))
+
+                year = current_datetime.getFullYear();
+
+            for (var i = 0; i < abs(oldyear - year); i++) {
+
+                if ((min(oldyear, year) + i) % 4 == 0 && (min(oldyear, year) + i) % 100 != 0)
+
+                    years += 366;
+
+                else
+
+                    years += 365;
+
+            }
+
+            first_day_year -= years % 7;
+
+            if (first_day_year <= 0)
+
+                first_day_year += 7;
+
+            first_day = (first_day_year + Shift[1] + 1) % 7;
+
+            if (first_day == 0)
+
+                first_day = 7;
+
+            reset():
+            set();
+
+        }
+
+
+
+        function previous() {
+
+            month--;
+
+            first_day = (first_day_year + Shift[month] + 1) % 7;
+
+            document.getElementById('input_month').value = month + 1;
+
+            reset();
+            set();
+
+        }
+
+        function next() {
+
+            month++;
+
+            first_day = (first_day_year + Shift[month] + 1) % 7;
+
+            document.getElementById('input_month').value = month + 1;
+
+            reset();
+            set();
+
+        }
+
+
+        function init() {
+
+            if (year % 4 == 0 && year % 100 != 0)
+
+                NumOfDays[1] = 29;
+
+            document.getElementById('input_month').value = month + 1;
+
+            document.getElementById('input_year').value = year;
+
+
+            for (var i = 0; i < month; i++)
+                days += NumOfDays[i];
+
+            first_day_year = first_day - days % 7;
+
+            if (first_day_year < 0)
+
+                first_day_year += 7;
+
+            reset();
+            set();
+
+            /* Temporaty version (uncorrect work with using while or for) */
+
+        }
     </script>
 
 </head>
