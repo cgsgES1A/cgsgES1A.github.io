@@ -32,13 +32,14 @@
                 A.push(num);
             }
             for (i = 0; i < n; i++) {
-                if (A.indexOf(A[i], i + 1) == -1)
+                if (A.indexOf(A[i], 0) == -1)
                     L.push(A[i]);
-                else if (A.indexOf(A[A.indexOf(A[i], i + 1)], A.indexOf(A[i], i + 1) + 1) == -1 && L == [])
+                else if (A.indexOf(A[A.indexOf(A[i], i + 1)], A.indexOf(A[i], i + 1) + 1) == -1 && A.indexOf(A[i], 0) == i)
                     L.push(A[i]);
             }
 
-            alert(L[0], L[1]);
+            alert(L[0]);
+            alert(L[1]);
         }
 
         function read() {
