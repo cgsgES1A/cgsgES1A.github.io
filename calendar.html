@@ -694,9 +694,15 @@
 
 
 
+            for (var i = 0; i < 28; i++) {
+                setInterval(function () {
+                    document.getElementById(`${i + first_day}`).innerHTML = i + 1;
+                }, 10)
+            }
 
 
-            /* Temporaty version (uncorrect work with using while or for) */
+
+            /* Temporaty version (uncorrect work with using while or for) *
 
             setInterval(function () {
 
@@ -864,7 +870,7 @@
 
                 document.getElementById(27 + first_day).innerHTML = 28;
 
-            }, 10);
+            }, 10); */
 
             if (NumOfDays[month] > 28) {
 
