@@ -112,6 +112,8 @@
                 days += NumOfDays[i];
 
             first_day_year = first_day - days % 7;
+            if (first_day_year < 0)
+                first_day_year += 7;
 
             for (var i = 0; i < Math.abs(oldyear - year); i++) {
 
