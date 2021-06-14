@@ -1,0 +1,41 @@
+<html>
+
+<head>
+    <title>Daily quiz 0</title>
+
+    <script type="text/javascript" src="glMatrix-0.9.5.min.js"></script>
+
+    <script type="text/javascript">
+
+        function initShaders() {
+            var text;
+            var url = 'quiz0_input.txt';
+
+            fetch(url)
+                .then(response => {
+                    return response.text();
+                })
+                .then(input => {
+                    if (input == null) {
+                        alert("Could not download input file");
+                    }
+                    alert(input);
+                });
+        }
+
+
+
+
+
+    </script>
+
+
+</head>
+
+
+<body onload="webGLStart();">
+    <script>
+    </script>
+</body>
+
+</html>
