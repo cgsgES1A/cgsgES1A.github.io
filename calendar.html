@@ -28,7 +28,7 @@
 
         var NumOfDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-        var first_day = day_week - (day - 1) % 7;
+        var first_day;;
 
         var first_day_year;
 
@@ -858,6 +858,9 @@
 
             document.getElementById('input_year').value = year;
 
+            first_day = day_week - (day - 1) % 7;
+            if (first_day < 0)
+                first_day += 7;
 
             for (var i = 0; i < month; i++)
                 days += NumOfDays[i];
