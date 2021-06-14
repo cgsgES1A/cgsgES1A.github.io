@@ -93,6 +93,7 @@
 
         function update_year() {
             years = 0;
+            days = 0;
             data = document.getElementById('input_year').value;
 
             oldyear = current_datetime.getFullYear();
@@ -102,6 +103,15 @@
             if (isNaN(year))
 
                 year = current_datetime.getFullYear();
+
+            first_day = day_week - (day - 1) % 7;
+            if (first_day < 0)
+                first_day += 7;
+
+            for (var i = 0; i < month; i++)
+                days += NumOfDays[i];
+
+            first_day_year = first_day - days % 7;
 
             for (var i = 0; i < Math.abs(oldyear - year); i++) {
 
