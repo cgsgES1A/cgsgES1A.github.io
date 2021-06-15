@@ -2,11 +2,11 @@
 
 <head>
     <meta charset="UTF_8" />
-    <title>Sample hosted HTML</title>
+    <title>Meowgram</title>
     <link rel="stylesheet" href="styles.css">
 
     <script type="text/javascript">
-        var nick, mess;
+        var nick = "Anonim", mess = "secret message";
 
         function update_nickname() {
             data = document.getElementById('input_nickname').value;
@@ -20,10 +20,10 @@
         function submit() {
             fetch('/', {
                 method: 'POST',
-                body: nick + ":" + mess
+                body: nick + ":  " + mess
             });
-
-            document.getElementById('input_nickname').value = "";
+            nick = "Anonim"
+            mess = "secret message";
             document.getElementById('input_message').value = "";
         }
 
@@ -49,12 +49,15 @@
 
         setTimeout(function run() {
             get_nick();
-            setTimeout(run, 5000);
-        }, 5000);
+            setTimeout(run, 500);
+        }, 500);
     </script>
 
-    <p>This HTML is served from a file</p>
+    <div>
+        <img src="https://static10.tgstat.ru/channels/_0/b1/b13053d32110f7cfd019a954cad51a44.jpg" width=50 height=50>
 
+        <span id="meowgram">Meowgram:) </span>
+    </div>
     <br>
     <label for="input_nickname"> nickname</label> <input type="text" id="input_nickname" onkeyup="update_nickname()"
         style="background-color:lavenderblush">
@@ -62,8 +65,11 @@
     <label for="input_message"> messaage</label> <input type="text" id="input_message" onkeyup="update_message()"
         style="background-color:lavenderblush">
     <br><br>
-    <button onclick="submit();"> Submit! </button>
+    <button onclick="submit();" id="cat"> </button>
     <br><br>
+    <button class="button" onclick="submit();">
+        <p> Submit) </p>
+    </button>
     <div id="mess"></div>
 </body>
 
