@@ -6,6 +6,7 @@ const port = 8000;
 
 let Nicks = [];
 let string = "";
+let cont;
 
 const requestListener = function (req, res) {
     console.log(
@@ -25,7 +26,12 @@ const requestListener = function (req, res) {
     else if (req.url.endsWith(".css")) {
         fileName = req.url.substr(1);
         contentType = "text/css";
-    } else {
+    }
+    else if (req.method === 'GET' && req.url == '/a') {
+        res.writeHead(200);
+        res.end(string);
+    }
+    else {
         res.writeHead(500);
         res.end("Error, unsupported");
         return;
@@ -33,6 +39,7 @@ const requestListener = function (req, res) {
 
     fs.readFile(`${__dirname}/${fileName}`)
         .then(contents => {
+            cont = contents;
             res.setHeader("Content-Type", contentType);
             res.writeHead(200);
             res.end(contents);
@@ -51,24 +58,16 @@ const requestListener = function (req, res) {
         });
         req.on('end', () => {
             Nicks.push(data);
-            res.end();
-            return;
+            string += data + "<br>";
         });
+        res.setHeader("Content-Type", contentType);
+        res.writeHead(200);
+        res.end(cont);
     }
-    /*
-        if (req.method === 'GET') {
-            Nicks.forEach(function (nick) {
-                string += nick + ';';
-            });
-            res.writeHead(200);
-            res.end(string);
-        }
-    */
+
     return;
 
 };
 
 const server = http.createServer(requestListener);
-server.listen(port, host, () => {
-    console.log(`Server is running on http://${host}:${port}`);
-});
+server.listen(port);

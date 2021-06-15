@@ -17,16 +17,14 @@
             mess = data;
         }
 
-        function submit_nick() {
+        function submit() {
             fetch('/', {
                 method: 'POST',
-                body: nick
+                body: nick + ":" + mess
             });
 
             document.getElementById('input_nickname').value = "";
-        }
-        function submit_mess() {
-            ;
+            document.getElementById('input_message').value = "";
         }
 
     </script>
@@ -38,16 +36,15 @@
         var getnick, getmess;
 
         function get_nick() {
-            fetch('/', {
+            fetch('/a', {
                 method: 'GET'
             })
                 .then(response => {
                     return response.text();
                 })
                 .then(text => {
-                    ;
+                    document.getElementById(`mess`).innerHTML = text;
                 });
-            alert("Debug");
         }
 
         setTimeout(function run() {
@@ -61,12 +58,13 @@
     <br>
     <label for="input_nickname"> nickname</label> <input type="text" id="input_nickname" onkeyup="update_nickname()"
         style="background-color:lavenderblush">
-    <button onclick="submit_nick();"> Submit </button>
-
     <br>
     <label for="input_message"> messaage</label> <input type="text" id="input_message" onkeyup="update_message()"
         style="background-color:lavenderblush">
-    <button onclick="submit_mess();"> Submit </button>
+    <br><br>
+    <button onclick="submit();"> Submit! </button>
+    <br><br>
+    <div id="mess"></div>
 </body>
 
 </html>
