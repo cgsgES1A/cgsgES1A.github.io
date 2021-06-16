@@ -74,11 +74,30 @@
             background: #efefef;
         }
     </style>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+        var socket = io();
+
+        var input_n = document.getElementById('input_n');
+        var nickname = "";
+        var form = document.getElementById('form');
+
+        function set_nickname() {
+            socket.emit('nickname', input_n.value);
+            input_n.value = '';
+            socket.on('nickname', function (nick) {
+                nickname = nick;
+            });
+        }
+    </script>
+
 </head>
 
 <body>
     <ul id="messages"></ul>
     <form id="form" action="">
+        <button id="log" onclick="set_nickname();">log in</button>
         <input id="input_n" autocomplete="off" />
         <input id="input_m" autocomplete="off" />
         <button id="cat"></button>
@@ -93,13 +112,20 @@
         var input_n = document.getElementById('input_n');
         var input_m = document.getElementById('input_m');
 
+        fetch('/getuser', {
+            method: 'GET'
+        })
+            .then(response => {
+                return response.text();
+            })
+            .then(text => {
+                nickname = text;
+            });
+
         form.addEventListener('submit', function (e) {
             e.preventDefault();
-            if (input_n.value && input_m.value) {
-                socket.emit('chat message', input_n.value + ":   " + input_m.value);
-                input_m.value = '';
-                input_n.value = '';
-            }
+            socket.emit('chat message', nickname + ":   " + input_m.value);
+            input_m.value = '';
         });
 
         socket.on('chat message', function (msg) {
@@ -108,11 +134,8 @@
             messages.appendChild(item);
             window.scrollTo(0, document.body.scrollHeight);
         });
-
-        fetch('/cookie', {
-            method: 'POST',
-            body: input_n
-        });
+        document.cookie = "user=ES1A";
+        alert(document.cookie);
     </script>
 </body>
 

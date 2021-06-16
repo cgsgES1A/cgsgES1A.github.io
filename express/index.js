@@ -9,30 +9,25 @@ let cookieParser = require('cookie-parser');
 
 app.use(cookieParser());
 
-let nick = "";
+let nickname = "";
 
-app.get('/cookie', (req, res) => {
-    if (req.method === 'POST') {
-        var data = '';
-
-        req.on('data', chunk => {
-            data += chunk;
-        });
-        req.on('end', () => {
-            nick = data;
-        });
-    }
+io.on('connection', (socket) => {
+    socket.on('nickname', (nick) => {
+        nickname = nick;
+        io.emit('nickname', nickname);
+    });
+    socket.on('chat message', (msg) => {
+        io.emit('chat message', msg);
+    });
 });
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/server2.html');
-    res.cookie("nickname", nick);
+    res.cookie("nickname", nickname);
 });
 
-io.on('connection', (socket) => {
-    socket.on('chat message', (msg) => {
-        io.emit('chat message', nick + msg);
-    });
+app.get('/getuser', (req, res) => {
+    res.send(req.cookies);
 });
 
 server.listen(8000, (err) => {
