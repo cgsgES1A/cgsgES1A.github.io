@@ -10,6 +10,7 @@
         function search(text) {
             var A = text.split(' ');
             var L = A.slice(0);
+            var max_ind = 0;
             alert(text);
 
             for (var i = 0; i < A.length; i++) {
@@ -19,8 +20,11 @@
                     L[A[i]] = 0;
                 }
             }
-            alert(L);
-            alert(L.findIndex(j => j == Math.max(L)));
+            for (var j = 0; j < L.length; j++) {
+                if (L[j] > L[max_ind])
+                    max_ind = j;
+            }
+            alert(j);
         }
 
         function read() {
