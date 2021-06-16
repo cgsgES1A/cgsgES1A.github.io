@@ -10,21 +10,18 @@
         function search(text) {
             var A = text.split(' ');
             var L = A.slice(0);
-            var max_ind = 0;
             alert(text);
 
             for (var i = 0; i < A.length; i++) {
-                if (A[i] >= A.length)
-                    L[i] = 0;
-                else {
+                if (A[i] < A.length)
                     L[A[i]] = 0;
-                }
             }
             for (var j = 0; j < L.length; j++) {
-                if (L[j] > L[max_ind])
-                    max_ind = j;
+                if (L[j] != 0) {
+                    alert(j);
+                    return;
+                }
             }
-            alert(max_ind);
         }
 
         function read() {
