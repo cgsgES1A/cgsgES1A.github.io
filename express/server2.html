@@ -75,20 +75,36 @@
         }
     </style>
 
-    <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
-        var socket = io();
-
         var input_n = document.getElementById('input_n');
-        var nickname = "";
-        var form = document.getElementById('form');
+
+        function setCookie(name, value) {
+            let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+            document.cookie = updatedCookie;
+        }
+
+        function getCookie(name) {
+            let matches = document.cookie.match(new RegExp(
+                "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+            ));
+            return matches ? decodeURIComponent(matches[1]) : undefined;
+        }
+
+        function deleteCookie(name) {
+            setCookie(name, "", {
+                'max-age': -1
+            })
+        }
 
         function set_nickname() {
-            socket.emit('nickname', input_n.value);
+            if (isNaN(getCookie("num_of_cookies")))
+                setCookie("num_of_cookies", 0);
+            else
+                setCookie("num_of_cookies", parseInt(getCookie("num_of_cookies")) + 1);
+
+            setCookie(getCookie("num_of_cookies"), input_n.value);
             input_n.value = '';
-            socket.on('nickname', function (nick) {
-                nickname = nick;
-            });
         }
     </script>
 
@@ -106,25 +122,14 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();
-
         var messages = document.getElementById('messages');
         var form = document.getElementById('form');
         var input_n = document.getElementById('input_n');
         var input_m = document.getElementById('input_m');
 
-        fetch('/getuser', {
-            method: 'GET'
-        })
-            .then(response => {
-                return response.text();
-            })
-            .then(text => {
-                nickname = text;
-            });
-
         form.addEventListener('submit', function (e) {
             e.preventDefault();
-            socket.emit('chat message', nickname + ":   " + input_m.value);
+            socket.emit('chat message', getCookie(getCookie("num_of_cookies")) + ":   " + input_m.value);
             input_m.value = '';
         });
 
@@ -134,8 +139,6 @@
             messages.appendChild(item);
             window.scrollTo(0, document.body.scrollHeight);
         });
-        document.cookie = "user=ES1A";
-        alert(document.cookie);
     </script>
 </body>
 
