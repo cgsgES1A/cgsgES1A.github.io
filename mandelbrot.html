@@ -161,10 +161,10 @@
         function webGLStart() {
             zoom_value = 3;
             checkers_cell_width = 30;
-            delx = 250;
-            dely = 250;
-            oldx = 250;
-            oldy = 250;
+            delx = zoom_value;
+            dely = zoom_value;
+            oldx = zoom_value;
+            oldy = zoom_value;
             document.getElementById('input_checkers_cell_width').value = checkers_cell_width;
 
             var xmlhttp = new XMLHttpRequest();
@@ -212,8 +212,8 @@
 
         function mouseMove(e) {
             if (flag) {
-                delx += (e.clientX - oldx) / 250 * zoom_value - zoom_value;
-                dely += (e.clientY - oldy) / 250 * zoom_value - zoom_value;
+                delx += (e.clientX - oldx) / 250.0 * zoom_value;
+                dely += (e.clientY - oldy) / 250.0 * zoom_value;
                 oldx = e.clientX;
                 oldy = e.clientY;
             }
@@ -227,14 +227,14 @@
             flag = 0;
         }
         function mouseWheel(e) {
-            delx += (e.clientX - oldx) / 250 * zoom_value - zoom_value;
-            dely += (e.clientY - oldy) / 250 * zoom_value - zoom_value;
+            delx += (e.clientX - oldx) / 250.0 * zoom_value;
+            dely += (e.clientY - oldy) / 250.0 * zoom_value;
             if (e.deltaY >= 0)
                 zoom_value *= 1.2;
             if (e.deltaY < 0)
                 zoom_value /= 1.2;
-            delx += (e.clientX - oldx) / 250 * zoom_value - zoom_value;
-            dely += (e.clientY - oldy) / 250 * zoom_value - zoom_value;
+            delx += (e.clientX - oldx) / 250.0 * zoom_value
+            dely += (e.clientY - oldy) / 250.0 * zoom_value;
         }
     </script>
 

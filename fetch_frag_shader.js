@@ -12,7 +12,7 @@ void main(void)
 {
     float tmp = zoom;
     float xs = gl_FragCoord.x, ys = gl_FragCoord.y;
-    float a1 = xs * tmp * 2.0 / 500.0 - tmp - dx, b1 = ys * tmp * 2.0 / 500.0 - tmp + dy, a = a1, b = b1, an = a1, bn = b1;
+    float a1 = xs * tmp * 2.0 / 500.0 - dx, b1 = ys * tmp * 2.0 / 500.0 - 2.0 * tmp + dy, a = a1, b = b1, an = a1, bn = b1;
     float n = 0.0;
 
     while (n < cell_width && a * a + b * b < 4.0) {
