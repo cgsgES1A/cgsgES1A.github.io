@@ -1,0 +1,65 @@
+<html>
+
+<head>
+    <title>Daily quiz 2</title>
+
+    <script type="text/javascript" src="glMatrix-0.9.5.min.js"></script>
+
+    <script type="text/javascript">
+
+        function search(text) {
+            var i = 0, j;
+            var n, k;
+            alert(text);
+
+            while (text[i] != '\n')
+                i++;
+            n = parseInt(text.slice(0, i));
+            i++;
+            j = i;
+            while (text[i] != '\n')
+                i++;
+            k = parseInt(text.slice(j, i));
+            i++;
+
+            var A = (text.slice(i)).split('');
+            alert(A);
+            /*
+            for (var i = 0; i < A.length; i++) {
+                if (A[i] < A.length)
+                    L[A[i]] = 0;
+            }
+            for (var j = 0; j < L.length; j++) {
+                if (L[j] != 0) {
+                    alert(j);
+                    return;
+                }
+            }
+            alert(0);*/
+        }
+
+        function read() {
+            var url = 'quiz3_input.txt';
+
+            fetch(url)
+                .then(response => {
+                    return response.text();
+                })
+                .then(input => {
+                    if (input == null) {
+                        alert("Could not download input file");
+                    }
+                    search(input);
+                });
+        }
+
+    </script>
+
+
+</head>
+
+
+<body onload="read();">
+</body>
+
+</html>
