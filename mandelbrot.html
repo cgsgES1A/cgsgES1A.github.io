@@ -212,8 +212,8 @@
 
         function mouseMove(e) {
             if (flag) {
-                delx += e.clientX - oldx;
-                dely += e.clientY - oldy;
+                delx += (e.clientX - oldx) / 250 * zoom_value - zoom_value;
+                dely += (e.clientY - oldy) / 250 * zoom_value - zoom_value;
                 oldx = e.clientX;
                 oldy = e.clientY;
             }
@@ -227,14 +227,14 @@
             flag = 0;
         }
         function mouseWheel(e) {
-            delx += e.clientX - oldx;
-            dely += e.clientY - oldy;
+            delx += (e.clientX - oldx) / 250 * zoom_value - zoom_value;
+            dely += (e.clientY - oldy) / 250 * zoom_value - zoom_value;
             if (e.deltaY >= 0)
                 zoom_value *= 1.2;
             if (e.deltaY < 0)
                 zoom_value /= 1.2;
-            delx -= e.clientX - oldx;
-            dely -= e.clientY - oldy;
+            delx += (e.clientX - oldx) / 250 * zoom_value - zoom_value;
+            dely += (e.clientY - oldy) / 250 * zoom_value - zoom_value;
         }
     </script>
 
