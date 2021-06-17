@@ -230,9 +230,9 @@
             delx += (e.clientX - oldx) / 250.0 * zoom_value;
             dely += (e.clientY - oldy) / 250.0 * zoom_value;
             if (e.deltaY >= 0)
-                zoom_value *= 1.2;
+                zoom_value *= 1.1;
             if (e.deltaY < 0)
-                zoom_value /= 1.2;
+                zoom_value /= 1.1;
             delx += (e.clientX - oldx) / 250.0 * zoom_value
             dely += (e.clientY - oldy) / 250.0 * zoom_value;
         }
