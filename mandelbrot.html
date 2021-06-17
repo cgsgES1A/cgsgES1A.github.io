@@ -230,7 +230,7 @@
             var olddelx = delx;
             var olddely = dely;
             delx = (e.clientX - 250.0) / 250.0 * zoom_value;
-            dely = (e.clientY - 250.0) / 250.0 * zoom_value;
+            dely = -(e.clientY - 250.0) / 250.0 * zoom_value;
             if (e.deltaY >= 0)
                 zoom_value *= 1.1;
             if (e.deltaY < 0)
