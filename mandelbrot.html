@@ -227,10 +227,14 @@
             flag = 0;
         }
         function mouseWheel(e) {
+            delx += e.clientX - oldx;
+            dely += e.clientY - oldy;
             if (e.deltaY >= 0)
                 zoom_value *= 1.2;
             if (e.deltaY < 0)
                 zoom_value /= 1.2;
+            delx -= e.clientX - oldx;
+            dely -= e.clientY - oldy;
         }
     </script>
 
