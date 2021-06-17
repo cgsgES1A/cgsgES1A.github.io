@@ -227,16 +227,10 @@
             flag = 0;
         }
         function mouseWheel(e) {
-            if (e.deltaY >= 0) {
-                delx += (e.clientX - 250) / 250 * zoom_value;
-                dely += (e.clientY - 250) / 250 * zoom_value;
+            if (e.deltaY >= 0)
                 zoom_value *= 1.2;
-            }
-            if (e.deltaY < 0) {
-                delx -= (e.clientX - 250) / 250 * zoom_value;
-                dely -= (e.clientY - 250) / 250 * zoom_value;
+            if (e.deltaY < 0)
                 zoom_value /= 1.2;
-            }
         }
     </script>
 
