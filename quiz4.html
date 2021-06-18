@@ -1,0 +1,60 @@
+<html>
+
+<head>
+    <title>Daily quiz 4</title>
+
+    <script type="text/javascript" src="glMatrix-0.9.5.min.js"></script>
+
+    <script type="text/javascript">
+
+        function search(text) {
+            var n = parseInt(text), ;
+            var N = n;
+            alert(text);
+            var flag = 1;
+            var A = text.split('');
+
+            if (N == 0) {
+                alert("БЕССОННИЦА :(");
+                return;
+            }
+
+            while (True) {
+                if (A.length == 10) {
+                    alert(N);
+                    return;
+                }
+                N += n;
+                num = N.toString();
+                for (var i = 0; i < num.length; i++) {
+                    if (A.indexOf(num[i]) == -1)
+                        A.push(num[i]);
+                }
+            }
+        }
+
+        function read() {
+            var url = 'quiz4_input.txt';
+
+            fetch(url)
+                .then(response => {
+                    return response.text();
+                })
+                .then(input => {
+                    if (input == null) {
+                        alert("Could not download input file");
+                    }
+                    search(input);
+                });
+        }
+
+    </script>
+
+
+</head>
+
+
+<body onload="read();">
+</body>
+
+</html>
