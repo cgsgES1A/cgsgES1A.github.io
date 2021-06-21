@@ -1,0 +1,67 @@
+<html>
+
+<head>
+    <title>Daily quiz 5</title>
+
+    <script type="text/javascript">
+
+        function search(text) {
+            var n = parseInt(text);
+            var N = 0;
+            alert(text);
+            var flag = 1;
+            var A = text.split('\n');
+
+            for (var i = 0; i < A.length; i++)
+                A[i] = A[i].split(' ');
+
+            for (i = 0; i < A.length; i++)
+                for (var j = 0; j < A[0].length; j++) {
+                    if (A[i][j] == 0)
+                        A[i][j] = '.';
+                    else if (i == 0 || i == A.length - 1 || j == 0 || j == A[0].length - 1)
+                        A[i][j] = 2;
+                }
+            while (flag) {
+                flag = 0;
+                for (i = 1; i < A.length - 1; i++)
+                    for (var j = 1; j < A[0].length - 1; j++) {
+                        if (A[i - 1][j] == 2 || A[i + 1][j] == 2 || A[i][j - 1] == 2 || A[i][j + 1] == 2) {
+                            A[i][j] = 2;
+                            flag = 1;
+                        }
+                    }
+            }
+            for (i = 0; i < A.length; i++)
+                for (var j = 0; j < A[0].length; j++) {
+                    if (A[i][j] == 2)
+                        A[i][j] = '.';
+                }
+            for (i = 0; i < A.length; i++)
+                A[i] = A[i].join(' ');
+            alert(A.join('\n'));
+        }
+
+        function read() {
+            var url = 'quiz5_input.txt';
+
+            fetch(url)
+                .then(response => {
+                    return response.text();
+                })
+                .then(input => {
+                    if (input == null) {
+                        alert("Could not download input file");
+                    }
+                    search(input);
+                });
+        }
+
+    </script>
+
+</head>
+
+<body onload="read();">
+</body>
+
+</html>
