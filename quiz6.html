@@ -9,7 +9,6 @@
             let L = 0, R = A.length;
             let m = Math.floor((R - L) / 2);
             while (R - L > 1) {
-                alert("AAA");
                 if (A[m] > x) {
                     R = m;
                     m -= Math.floor((R - L) / 2);
@@ -31,11 +30,15 @@
             while (flag) {
                 if (i == A.length - 1 || A[i] > A[i + 1])
                     flag = 0;
+                if (A[i] == x) {
+                    alert("YES!");
+                    return;
+                }
                 i++;
             }
             if (i != A.length - 1)
                 A = [].concat(A.slice(i, A.length), A.slice(0, i));
-            alert(binary_search(A, 12) ? "YES!" : "No...");
+            alert(binary_search(A, x) ? "YES!" : "No...");
         }
 
         function read() {
