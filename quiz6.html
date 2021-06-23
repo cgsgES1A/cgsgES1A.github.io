@@ -6,11 +6,8 @@
     <script type="text/javascript">
 
         function binary_search(A, x) {
-            alert("A");
-            let m = Math.floor((R - L) / 2);
             let L = 0, R = A.length;
-            alert("A");
-            alert(R - L);
+            let m = Math.floor((R - L) / 2);
             while (R - L > 1) {
                 alert("AAA");
                 if (A[m] > x) {
@@ -21,9 +18,6 @@
                     L = m;
                     m += Math.floor((R - L) / 2);
                 }
-                alert(m);
-                alert(L);
-                alert(R);
             }
             return (A[L] == x);
         }
