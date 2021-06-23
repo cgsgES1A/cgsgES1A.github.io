@@ -31,6 +31,7 @@
             }
             if (i != A.length - 1)
                 A = [].concat(A.slice(i + 1, A.length), A.slice(0, i + 1));
+            alert(A);
             alert(binary_search(A, 12) ? "YES!" : "No...");
         }
 
