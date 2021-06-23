@@ -9,7 +9,7 @@
             let m = 0;
             let L = 0, R = A.length;
             while (R - L > 1) {
-                m = (R - L) / 2;
+                m = Math.floor((R - L) / 2);
                 if (A[m] > x)
                     R = m;
                 else
