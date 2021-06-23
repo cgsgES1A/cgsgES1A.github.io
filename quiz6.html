@@ -22,11 +22,15 @@
         }
 
         function search(text) {
-            let x = parseInt(text.slice(0, 1));
+            let x;
             let A = (text.slice(2)).split(' ');
             let flag = 1;
             let i = 0;
             alert(text);
+            while (text[i] != '\n')
+                i++;
+            x = parseInt(text.slice(0, i));
+            i++;
             while (flag) {
                 if (i == A.length - 1 || A[i] > A[i + 1])
                     flag = 0;
