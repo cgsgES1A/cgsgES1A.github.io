@@ -10,7 +10,7 @@
             let L = 0, R = A.length;
             while (R - L > 1) {
                 m = (R - L) / 2;
-                if (m > x)
+                if (A[m] > x)
                     R = m;
                 else
                     L = m;
@@ -31,7 +31,6 @@
             }
             if (i != A.length - 1)
                 A = [].concat(A.slice(i, A.length), A.slice(0, i));
-            alert(A);
             alert(binary_search(A, 12) ? "YES!" : "No...");
         }
 
