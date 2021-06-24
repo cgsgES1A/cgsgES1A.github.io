@@ -19,8 +19,11 @@
             let max_pal = 1;
             for (let i = 0; i < A.length - 1; i++)
                 for (let j = 2; j < A.length + 1; j++) {
-                    if (A.slice(i, j).length > max_pal && is_pal(A.slice(i, j)))
+                    if (A.slice(i, j).length > max_pal && is_pal(A.slice(i, j))) {
                         max_pal = A.slice(i, j).length;
+                        if (max_pal == 12)
+                            alert(i, j);
+                    }
                 }
             alert(max_pal);
         }
