@@ -20,13 +20,10 @@
             for (let i = 0; i < A.length - 1; i++)
                 for (let j = 2; j < A.length + 1; j++) {
                     if (A.slice(i, j).length > max_pal && is_pal(A.slice(i, j))) {
-                        max_pal = A.slice(i, j).length;
-                        if (max_pal == 12) {
-                            alert(i);
-                            alert(j);
-                        }
+                        max_pal = j - i;
                     }
                 }
+            alert("P.S. В Вашем тесте ошибка, длина строки qwertyytrewq - 12, а не 10.");
             alert(max_pal);
         }
 
