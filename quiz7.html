@@ -1,0 +1,49 @@
+<html>
+
+<head>
+    <title>Daily quiz 7</title>
+
+    <script type="text/javascript">
+
+        function is_pal(text) {
+            for (let i = 0; i < Math.floor(text.length / 2); i++) {
+                if (text[i] != text[text.length - 1 - i])
+                    return false;
+            }
+            return true;
+        }
+
+        function search(text) {
+            let A = text.split('');
+            let max_pal = 1;
+            for (let i = 0; i < A.length - 1; i++)
+                for (let j = 2; j < A.length + 1; j++) {
+                    if (A.slice(i, j).length > max_pal && is_pal(A.slice(i, j)))
+                        max_pal = A.slice(i, j).length;
+                }
+            alert(max_pal);
+        }
+
+        function read() {
+            var url = 'quiz7_input.txt';
+
+            fetch(url)
+                .then(response => {
+                    return response.text();
+                })
+                .then(input => {
+                    if (input == null) {
+                        alert("Could not download input file");
+                    }
+                    search(input);
+                });
+        }
+
+    </script>
+
+</head>
+
+<body onload="read();">
+</body>
+
+</html>
