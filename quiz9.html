@@ -1,0 +1,51 @@
+<html>
+
+<head>
+    <title>Daily quiz 7</title>
+
+    <script type="text/javascript">
+        function find_wall(A, index) {
+            let len = 0;
+            let i = index, cnt = 0;
+            while (i > 0 && A[i] != 1)
+                i--, cnt++;
+            len = cnt;
+            cnt = 0;
+            while (i < A.length - 1 && A[i] != 1)
+                i++, cnt++;
+            if (len < cnt)
+                len = cnt;
+            return len;
+        }
+
+        function search(text) {
+            alert(text)
+            let A = text.split(' ');
+            let L = A.slice(0, A.length);
+            for (let i = 0; i < A.length; i++)
+                L[i] = find_wall(A, i);
+            alert(L.join(' '));
+        }
+
+        function read() {
+            var url = 'quiz9_input.txt';
+
+            fetch(url)
+                .then(response => {
+                    return response.text();
+                })
+                .then(input => {
+                    if (input == null) {
+                        alert("Could not download input file");
+                    }
+                    search(input);
+                });
+        }
+    </script>
+
+</head>
+
+<body onload="read();">
+</body>
+
+</html>
