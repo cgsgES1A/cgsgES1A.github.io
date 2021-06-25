@@ -4,15 +4,20 @@
     <title>Daily quiz 7</title>
 
     <script type="text/javascript">
+        var infinity = 1000000000000000;
         function find_wall(A, index) {
             let len = 0;
             let i = index, cnt = 0;
             while (i > 0 && A[i] != 1)
                 i--, cnt++;
+            if (i == 0)
+                cnt = infinity;
             len = cnt;
             cnt = 0;
             while (i < A.length - 1 && A[i] != 1)
                 i++, cnt++;
+            if (i == A.length - 1)
+                cnt = infinity;
             if (len > cnt)
                 len = cnt;
             return len;
