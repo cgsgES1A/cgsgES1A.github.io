@@ -13,7 +13,7 @@
             cnt = 0;
             while (i < A.length - 1 && A[i] != 1)
                 i++, cnt++;
-            if (len < cnt)
+            if (len > cnt)
                 len = cnt;
             return len;
         }
