@@ -452,8 +452,8 @@
             let normals;
             let texcoords;
 
-            let src = "srtawberry/strawberry.gltf";//"cube/cube.gltf";
-            let src2 = "srtawberry/strawberry.bin";//"cube/cube.bin";
+            let src = "cube/cube.gltf";//"srtawberry/strawberry.gltf";
+            let src2 = "cube/cube.bin";//"srtawberry/strawberry.bin";
             let mdltxt;
             let parsedData;
             let TCBufView, NBufView, VBufView, IBufView;
@@ -529,7 +529,7 @@
                         texcoords = new Float32Array(data.slice(TCBufView.byteOffset, TCBufView.byteOffset + TCBufView.byteLength));
                         indices = new Uint32Array(data.slice(IBufView.byteOffset, IBufView.byteOffset + IBufView.byteLength));
                         NumOfIndex = indices.length;
-                        console.log(indices);
+                        //console.log(indices);
                     }
                 });
 
