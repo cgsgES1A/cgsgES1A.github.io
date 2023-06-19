@@ -519,10 +519,6 @@
                 .then((res) => res.arrayBuffer())
                 .then((data) => {
                     if (src2.length > 0) {
-                        Buf = new Uint8Array(data);
-                        let curPos = 0;
-                        const sign = Buf.slice(curPos, curPos += 4).
-                            reduce((res_str, ch) => res_str += String.fromCharCode(ch), "");
                         vertices = new Float32Array(data.slice(VBufView.byteOffset, VBufView.byteOffset + VBufView.byteLength));
                         vertices = new Float32Array(data.slice(VBufView.byteOffset, VBufView.byteOffset + VBufView.byteLength));
                         normals = new Float32Array(data.slice(NBufView.byteOffset, NBufView.byteOffset + NBufView.byteLength));
@@ -555,14 +551,6 @@
 
         let Texture;
         function webGLStart() {
-            zoom_value = 3;
-            checkers_cell_width = 30;
-            delx = 3;
-            dely = 3;
-            oldx = 3;
-            oldy = 3;
-            document.getElementById('input_checkers_cell_width').value = checkers_cell_width;
-
             var canvas = document.getElementById("wegl-canvas");
             initGL(canvas);
             initShaders();
@@ -570,22 +558,7 @@
             //Texture = loadTexture("P.bmp");
             createFBO();
         }
-
-        function update_checkers_cell_width() {
-            data = document.getElementById('input_checkers_cell_width').value;
-
-            checkers_cell_width = parseInt(data);
-            if (isNaN(checkers_cell_width)) {
-                checkers_cell_width = 1;
-                alert("���, ��� �� �����!!!");
-                document.getElementById("input_checkers_cell_width").style = "background-color:RebeccaPurple";
-            }
-            else
-                document.getElementById("input_checkers_cell_width").style = "background-color:MediumPurple";
-        }
     </script>
-
-
 </head>
 
 
