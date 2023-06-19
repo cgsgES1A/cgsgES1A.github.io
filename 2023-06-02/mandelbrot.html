@@ -1,0 +1,653 @@
+<html>
+
+<head>
+    <title>Mandelbrot</title>
+
+    <script type="text/javascript" src="glMatrix-0.9.5.min.js"></script>
+    <script type="text/javascript" src="https://greggman.github.io/webgl-lint/webgl-lint.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <script type="text/javascript">
+        var gl;
+        var checkers_cell_width;
+        var zoom_value;
+        var delx, dely, oldx, oldy;
+
+        var color;
+
+        function initGL(canvas) {
+            try {
+                gl = canvas.getContext("webgl2");
+                gl.viewportWidth = canvas.width;
+                gl.viewportHeight = canvas.height;
+            } catch (e) {
+            }
+            if (!gl) {
+                alert("Could not initialise WebGL");
+            }
+        }
+
+
+        function getShader(str, gl, id) {
+            var shader;
+
+            if (id == "shader-fs") {
+                shader = gl.createShader(gl.FRAGMENT_SHADER);
+            } else if (id == "shader-vs") {
+                shader = gl.createShader(gl.VERTEX_SHADER);
+            } else {
+                return null;
+            }
+
+            gl.shaderSource(shader, str);
+            gl.compileShader(shader);
+
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                alert(gl.getShaderInfoLog(shader));
+                return null;
+            }
+
+            return shader;
+        }
+
+        function drawPrimitive() {        
+            if (LoadFlag) {
+                mat4.identity(wMatrix);
+                mat4.rotateY(wMatrix, angle, wMatrix);
+                angle += 0.01;
+
+                mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
+
+                mat4.identity(mvMatrix);
+                mat4.translate(mvMatrix, [-1.5, 0.0, -7.0]);
+                mat4.translate(mvMatrix, [3.0, 0.0, 0.0]);
+                
+                mat4.inverse(mvMatrix, normalMatrix);
+                mat4.transpose(normalMatrix, normalMatrix);
+                
+                setMatrixUniforms();
+                
+                gl.enable(gl.DEPTH_TEST);
+
+                
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, IndexBuffer);
+                
+                gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+                gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
+                gl.enableVertexAttribArray(shaderProgram.vertexTexCoordAttribute);
+
+                gl.bindBuffer(gl.ARRAY_BUFFER, VertexBuffer);
+                gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
+                // gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, 4, gl.FLOAT, false, 0, 0);
+                
+                gl.bindBuffer(gl.ARRAY_BUFFER, NormalBuffer);
+                gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, 3, gl.FLOAT, false, 0, 0);
+                
+                gl.bindBuffer(gl.ARRAY_BUFFER, TexCoordBuffer);
+                gl.vertexAttribPointer(shaderProgram.vertexTexCoordAttribute, 2, gl.FLOAT, false, 0, 0);
+
+                //gl.activeTexture(gl.TEXTURE0);
+                //gl.bindTexture(gl.TEXTURE_2D, Texture);
+                
+                gl.drawElements(gl.TRIANGLES, NumOfIndex, gl.UNSIGNED_SHORT, 0);
+            }
+        }
+
+        let angle = 0;
+        function drawScene() {
+            gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+
+            gl.viewport(0, 0, targetTextureWidth, targetTextureHeight);
+            gl.clearColor(0.30, 0.47, 0.8, 1);
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+            
+            drawPrimitive();
+            
+            gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+            gl.bindTexture(gl.TEXTURE_2D, targetTexture);
+
+            gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+
+            gl.clearColor(0, 0, 0, 1);
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+            drawPrimitive(); 
+        }
+
+        function tick() {
+            window.requestAnimationFrame(tick);
+            drawScene();
+        }
+
+        let shaderProgram;
+
+        function initShaders() {
+            var ft, vt;
+            var url1 = 'fetch_frag_shader.js';
+            var url2 = 'fetch_vert_shader.js';
+            var fragmentShader;
+            var vertexShader;
+
+            shaderProgram = gl.createProgram();
+
+            let fragt =
+            `#version 300 es
+             precision mediump float;
+
+             uniform float cell_width;
+             uniform float zoom;
+             uniform float dx;
+             uniform float dy;
+
+             uniform sampler2D uSampler;
+
+             in vec3 Normal;
+             //in vec4 Color;
+             in vec2 TexCoord;
+             in vec3 Light;
+
+             out vec4 FragColor;
+
+             void main(void)
+             {
+                vec4 texelColor = texture(uSampler, TexCoord);
+                FragColor = vec4(texelColor.rgb * Light, texelColor.a);
+                //FragColor = vec4(Normal, 1);//vec4(Normal, 1);
+             }`;
+
+            /*
+            const ft1 = fetch(url1)
+                .then((res) => res.text())
+                .then((data) => {
+                fragt = data;
+            });
+            */
+
+            fragmentShader = getShader(fragt, gl, "shader-fs");
+            gl.attachShader(shaderProgram, fragmentShader);
+
+            let vertt =
+            `#version 300 es
+             in vec3 aVertexPosition;
+             //in vec4 aVertexColor;
+             in vec3 aVertexNormal;
+             in vec2 aVertexTexCoord;
+             
+             uniform mat4 uMVMatrix;
+             uniform mat4 uPMatrix;
+             uniform mat4 uWMatrix;
+             uniform mat4 NormalMatrix;
+
+             //out vec4 Color;
+             out vec3 Normal;
+             out vec2 TexCoord;
+
+             out vec3 Light;
+
+             void main(void)
+             {
+                gl_Position = uPMatrix * uMVMatrix * uWMatrix * vec4(aVertexPosition, 1.0);
+                //Color = aVertexColor;
+                Normal = aVertexNormal;
+                TexCoord = aVertexTexCoord;
+
+                vec3 ambientLight = vec3(0.3, 0.3, 0.3);
+                vec3 directionalLightColor = vec3(1, 1, 1);
+                vec3 directionalVector = normalize(vec3(0.85, 0.8, 0.75));
+                vec4 transformedNormal = NormalMatrix * vec4(aVertexNormal, 1.0);
+                float directional = max(dot(transformedNormal.xyz, directionalVector), 0.0);
+                Light = ambientLight + (directionalLightColor * directional);
+             }`;
+
+             /*
+             const ft2 = fetch("/frag.glsl")
+                .then((res) => res.text())
+                .then((data) => {
+                vertt = data;
+            });
+            */
+
+            vertexShader = getShader(vertt, gl, "shader-vs");
+            gl.attachShader(shaderProgram, vertexShader);
+
+            gl.linkProgram(shaderProgram);
+
+            if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+                alert("Could not initialise shaders");
+            }
+
+            gl.useProgram(shaderProgram);
+
+            shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+            gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+/*
+            shaderProgram.vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
+            gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);
+*/
+            shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aVertexNormal");
+            gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
+
+            shaderProgram.vertexTexCoordAttribute = gl.getAttribLocation(shaderProgram, "aVertexTexCoord");
+            gl.enableVertexAttribArray(shaderProgram.vertexTexCoordAttribute);
+
+            shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
+            shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
+            shaderProgram.uSampler = gl.getUniformLocation(shaderProgram, 'uSampler');
+            shaderProgram.NormalMatrixUniform = gl.getUniformLocation(shaderProgram, "NormalMatrix");
+            shaderProgram.wMatrixUniform = gl.getUniformLocation(shaderProgram, "uWMatrix");
+            
+            gl.clearColor(0.0, 0.0, 0.0, 1.0);
+            gl.enable(gl.DEPTH_TEST);
+
+            drawScene();
+            tick();
+        }
+
+        let mvMatrix = mat4.create();
+        let pMatrix = mat4.create();
+        let wMatrix = mat4.create();
+        let normalMatrix = mat4.create();
+            
+        function setMatrixUniforms() {
+            gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
+            gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
+            gl.uniform1i(shaderProgram.uSampler, 0);
+            gl.uniformMatrix4fv(shaderProgram.NormalMatrixUniform, false, normalMatrix);
+            gl.uniformMatrix4fv(shaderProgram.wMatrixUniform, false, wMatrix);
+        }
+
+        function loadTexture(url) {
+            const texture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+
+            const level = 0;
+            const internalFormat = gl.RGBA;
+            const width = 1;
+            const height = 1;
+            const border = 0;
+            const srcFormat = gl.RGBA;
+            const srcType = gl.UNSIGNED_BYTE;
+            const pixel = new Uint8Array([0, 255, 255, 255]);
+            gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
+                            width, height, border, srcFormat, srcType,
+                            pixel);
+
+            const image = new Image();
+            image.onload = function() {
+                gl.bindTexture(gl.TEXTURE_2D, texture);
+                gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
+                            srcFormat, srcType, image);
+
+                if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
+                    gl.generateMipmap(gl.TEXTURE_2D);
+                } else {
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+                }
+            };
+            image.src = url;
+            image.crossOrigin = "anonymous";
+
+            return texture;
+        }
+
+        function isPowerOf2(value) {
+            return (value & (value - 1)) == 0;
+        }
+
+        function Normalizing(V) {
+            let L = Math.sqrt(V[0] * V[0] + V[1] * V[1] + V[2] * V[2]);
+            if (L == 0)
+                return [0, 0, 0];
+            let NewV = [V[0] / L, V[1] / L, V[2] / L];
+            return NewV;
+        }
+
+        function evalNormals(Vert, I) {
+            let Ns = [];
+            let V = [];
+            for (let v = 0; v < Vert.length / 3; v++) {
+                V[v] = [Vert[v], Vert[v + 1], Vert[v + 2]];
+                Ns[v] = [0, 0, 0];
+            }
+
+            for (let i = 0; i < I.length; i += 3) {
+                P0 = V[I[i]];
+                P1 = V[I[i + 1]];
+                P2 = V[I[i + 2]];
+
+                let Pos1 = [P1[0] - P0[0], P1[1] - P0[1], P1[2] - P0[2]];
+                let Pos2 = [P2[0] - P0[0], P2[1] - P0[1], P2[2] - P0[2]];
+                let Pos3 = [Pos1[1] * Pos2[2] - Pos1[2] * Pos2[1], Pos1[2] * Pos2[0] - Pos1[0] * Pos2[2], Pos1[0] * Pos2[1] - Pos1[1] * Pos2[0]];
+
+                let N = Normalizing(Pos3);
+
+                Ns[I[i]] = Normalizing([Ns[I[i]][0] + N[0], Ns[I[i]][1] + N[1], Ns[I[i]][2] + N[2]]);
+                Ns[I[i + 1]] = Normalizing([Ns[I[i + 1]][0] + N[0], Ns[I[i + 1]][1] + N[1], Ns[I[i + 1]][2] + N[2]]);
+                Ns[I[i + 2]] = Normalizing([Ns[I[i + 2]][0] + N[0], Ns[I[i + 2]][1] + N[1], Ns[I[i + 2]][2] + N[2]]);
+            }
+
+            let N = [];
+            for (let v = 0; v < Ns.length; v++) {
+                N.push(Ns[v][0]);
+                N.push(Ns[v][1]);
+                N.push(Ns[v][2]);
+            }
+            return N;
+        }
+
+        let fb, targetTexture, texture;
+        const targetTextureWidth = 256;
+        const targetTextureHeight = 256;      
+        function createFBO() {
+            texture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+
+            {
+                // fill texture with 3x2 pixels
+                const level = 0;
+                const internalFormat = gl.LUMINANCE;
+                const width = 3;
+                const height = 2;
+                const border = 0;
+                const format = gl.LUMINANCE;
+                const type = gl.UNSIGNED_BYTE;
+                const data = new Uint8Array([
+                128,  64, 128,
+                    0, 192,   0,
+                ]);
+                const alignment = 1;
+                gl.pixelStorei(gl.UNPACK_ALIGNMENT, alignment);
+                gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, width, height, border,
+                            format, type, data);
+
+                // set the filtering so we don't need mips and it's not filtered
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            }
+            
+            targetTexture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, targetTexture);
+            
+            const level = 0;
+            const internalFormat = gl.RGBA;
+            const border = 0;
+            const format = gl.RGBA;
+            const type = gl.UNSIGNED_BYTE;
+            const data = null;
+            gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
+                            targetTextureWidth, targetTextureHeight, border,
+                            format, type, data);
+            
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);            
+
+            fb = gl.createFramebuffer();
+            gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+            
+            gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, targetTexture, 0);
+        }
+
+        function b64ToUint6(nChr) {
+            return nChr > 64 && nChr < 91
+                ? nChr - 65
+                : nChr > 96 && nChr < 123
+                ? nChr - 71
+                : nChr > 47 && nChr < 58
+                ? nChr + 4
+                : nChr === 43
+                ? 62
+                : nChr === 47
+                ? 63
+                : 0;
+        }
+
+        function base64DecToArr(sBase64, nBlocksSize) {
+            const sB64Enc = sBase64.replace(/[^A-Za-z0-9+/]/g, "");
+            const nInLen = sB64Enc.length;
+            const nOutLen = nBlocksSize
+                ? Math.ceil(((nInLen * 3 + 1) >> 2) / nBlocksSize) * nBlocksSize
+                : (nInLen * 3 + 1) >> 2;
+            const taBytes = new Uint8Array(nOutLen);
+
+            let nMod3;
+            let nMod4;
+            let nUint24 = 0;
+            let nOutIdx = 0;
+            for (let nInIdx = 0; nInIdx < nInLen; nInIdx++) {
+                nMod4 = nInIdx & 3;
+                nUint24 |= b64ToUint6(sB64Enc.charCodeAt(nInIdx)) << (6 * (3 - nMod4));
+                if (nMod4 === 3 || nInLen - nInIdx === 1) {
+                nMod3 = 0;
+                while (nMod3 < 3 && nOutIdx < nOutLen) {
+                    taBytes[nOutIdx] = (nUint24 >>> ((16 >>> nMod3) & 24)) & 255;
+                    nMod3++;
+                    nOutIdx++;
+                }
+                nUint24 = 0;
+                }
+            }
+
+            return taBytes;
+        }
+
+        let VertexBuffer;
+        let IndexBuffer;
+        let ColorBuffer;
+        let NormalBuffer;
+        let TexCoordBuffer;
+        let NumOfIndex;
+        let LoadFlag = false;
+        let NormOffset, TexCoordOffset;
+        function initBuffers() {         
+            let vertices;
+            let indices;
+            let colors;
+            let normals;
+            let texcoords;
+
+            let src = "srtawberry/strawberry.gltf";//"cube/cube.gltf";
+            let src2 = "srtawberry/strawberry.bin";//"cube/cube.bin";
+            let mdltxt;
+            let parsedData;
+            let TCBufView, NBufView, VBufView, IBufView;
+            let TCBuf, NBuf, VBuf, IBuf;
+            const ft = fetch(src)
+                .then((res) => res.text())
+                .then((data) => {
+                    mdltxt = data;
+                    parsedData = JSON.parse(mdltxt);
+                    console.log(parsedData);
+
+                    TCBufView = parsedData.bufferViews[parsedData.accessors[parsedData.meshes[0].primitives[0].attributes.TEXCOORD_0].bufferView];
+                    TCBuf = parsedData.buffers[TCBufView.buffer];
+                    let i = 0;
+                    while (i < TCBuf.uri.length && TCBuf.uri[i] != ',')
+                        i++;
+
+                    let b64Data = TCBuf.uri.slice(i + 1, TCBuf.uri.length);
+                      
+                    let ArBuf = base64DecToArr(b64Data).buffer;
+                    //console.log(ArBuf);
+                    
+                    let tcs = new Float32Array(ArBuf.slice(TCBufView.byteOffset, TCBufView.byteOffset + TCBufView.byteLength));//byteArray;//(atob(TCBuf.uri.slice(i + 1 + TCBufView.byteOffset, i + 1 + TCBufView.byteOffset + TCBufView.byteLength)));
+                    TexCoordBuffer = gl.createBuffer();
+                    //console.log(tcs);
+                    NBufView = parsedData.bufferViews[parsedData.accessors[parsedData.meshes[0].primitives[0].attributes.NORMAL].bufferView];
+                    NBuf = parsedData.buffers[NBufView.buffer];
+                    i = 0;
+                    while (i < TCBuf.uri.length && NBuf.uri[i] != ',')
+                        i++;
+                    let ns = new Float32Array(ArBuf.slice(NBufView.byteOffset, NBufView.byteOffset + NBufView.byteLength));//atob(NBuf.uri.slice(i + 1 + NBufView.byteOffset, i + 1 + NBufView.byteOffset + NBufView.byteLength));
+                    NormalBuffer = gl.createBuffer();
+                    
+                    VBufView = parsedData.bufferViews[parsedData.accessors[parsedData.meshes[0].primitives[0].attributes.POSITION].bufferView];
+                    VBuf = parsedData.buffers[VBufView.buffer];
+                    i = 0;
+                    while (i < TCBuf.uri.length && VBuf.uri[i] != ',')
+                        i++;
+                    let vs = new Float32Array(ArBuf.slice(VBufView.byteOffset, VBufView.byteOffset + VBufView.byteLength));//atob(VBuf.uri.slice(i + 1 + VBufView.byteOffset, i + 1 + VBufView.byteOffset + VBufView.byteLength));
+                    VertexBuffer = gl.createBuffer();
+                    IBufView = parsedData.bufferViews[parsedData.accessors[parsedData.meshes[0].primitives[0].indices].bufferView];
+                    IBuf = parsedData.buffers[IBufView.buffer];
+                    i = 0;
+                    while (i < TCBuf.uri.length && IBuf.uri[i] != ',')
+                        i++;
+                    let is = new Uint8Array(ArBuf.slice(IBufView.byteOffset, IBufView.byteOffset + IBufView.byteLength));//atob(IBuf.uri.slice(i + 1 + IBufView.byteOffset, i + 1 + IBufView.byteOffset + IBufView.byteLength));
+                    IndexBuffer = gl.createBuffer();
+                    NumOfIndex = is.length / 2;
+                    //console.log(NumOfIndex);
+                    NormOffset = VBufView.byteLength;
+                    TexCoordOffset = NormOffset + NBufView.byteLength;
+
+                    if (NumOfIndex > 0) {
+                        vertices = vs;
+                        normals = ns;
+                        texcoords = tcs;
+                        indices = is;
+                    }
+            });
+
+            let Buf;
+            const ft2 = fetch(src2)
+                .then((res) => res.arrayBuffer())
+                .then((data) => {
+                    if (src2.length > 0) {
+                        Buf = new Uint8Array(data);
+                        let curPos = 0;
+                        const sign = Buf.slice(curPos, curPos += 4).
+                            reduce((res_str, ch) => res_str += String.fromCharCode(ch), "");
+                        vertices = new Float32Array(data.slice(VBufView.byteOffset, VBufView.byteOffset + VBufView.byteLength));
+                        vertices = new Float32Array(data.slice(VBufView.byteOffset, VBufView.byteOffset + VBufView.byteLength));
+                        normals = new Float32Array(data.slice(NBufView.byteOffset, NBufView.byteOffset + NBufView.byteLength));
+                        texcoords = new Float32Array(data.slice(TCBufView.byteOffset, TCBufView.byteOffset + TCBufView.byteLength));
+                        indices = new Uint32Array(data.slice(IBufView.byteOffset, IBufView.byteOffset + IBufView.byteLength));
+                        NumOfIndex = indices.length;
+                        console.log(indices);
+                    }
+                });
+
+            const allData = Promise.all([ft, ft2]);
+            allData.then((res) => {
+                LoadFlag = true;
+                
+                gl.bindBuffer(gl.ARRAY_BUFFER, TexCoordBuffer);
+                gl.bufferData(gl.ARRAY_BUFFER, texcoords, gl.STATIC_DRAW);
+                gl.bindBuffer(gl.ARRAY_BUFFER, NormalBuffer);
+                gl.bufferData(gl.ARRAY_BUFFER, normals, gl.STATIC_DRAW);
+                gl.bindBuffer(gl.ARRAY_BUFFER, VertexBuffer);     
+                gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, IndexBuffer);
+                gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+            });
+            /* 
+            ColorBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, ColorBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+            */
+        }
+
+        let Texture;
+        function webGLStart() {
+            zoom_value = 3;
+            checkers_cell_width = 30;
+            delx = 3;
+            dely = 3;
+            oldx = 3;
+            oldy = 3;
+            document.getElementById('input_checkers_cell_width').value = checkers_cell_width;
+
+            var canvas = document.getElementById("wegl-canvas");
+            initGL(canvas);
+            initShaders();
+            initBuffers();
+            //Texture = loadTexture("P.bmp");
+            createFBO();
+        }
+
+        function update_checkers_cell_width() {
+            data = document.getElementById('input_checkers_cell_width').value;
+
+            checkers_cell_width = parseInt(data);
+            if (isNaN(checkers_cell_width)) {
+                checkers_cell_width = 1;
+                alert("���, ��� �� �����!!!");
+                document.getElementById("input_checkers_cell_width").style = "background-color:RebeccaPurple";
+            }
+            else
+                document.getElementById("input_checkers_cell_width").style = "background-color:MediumPurple";
+        }
+    </script>
+
+
+</head>
+
+
+<body onload="webGLStart();">
+    <canvas id="wegl-canvas" style="border: none;" width="500" height="500" onmousemove="mouseMove(event)"
+        onmousedown="mouseDown()" onmouseup="mouseUp()" wheel="mouseWheel()"></canvas>
+
+    <script>
+        var flag = 0;
+
+        document.getElementById("wegl-canvas").addEventListener("mousedown", mouseDown);
+        document.getElementById("wegl-canvas").addEventListener("mouseup", mouseUp);
+        document.getElementById("wegl-canvas").addEventListener("mousemove", mouseMove);
+        document.getElementById("wegl-canvas").addEventListener("wheel", mouseWheel);
+
+        function mouseMove(e) {
+            if (flag) {
+                delx += (e.clientX - oldx) / 250.0 * zoom_value;
+                dely += (e.clientY - oldy) / 250.0 * zoom_value;
+                oldx = e.clientX;
+                oldy = e.clientY;
+            }
+        }
+        function mouseDown(e) {
+            flag = 1;
+            oldx = e.clientX;
+            oldy = e.clientY;
+        }
+        function mouseUp(e) {
+            flag = 0;
+        }
+        function mouseWheel(e) {
+            var olddx = delx;
+            var olddy = dely;
+            delx -= (e.clientX - oldx) / 250.0 * zoom_value;
+            dely -= (e.clientY - oldy) / 250.0 * zoom_value;
+            if (e.deltaY >= 0)
+                zoom_value *= 1.1;
+            if (e.deltaY < 0)
+                zoom_value /= 1.1;
+            delx += (e.clientX - oldx) / 250.0 * zoom_value;
+            dely += (e.clientY - oldy) / 250.0 * zoom_value;
+        }
+    </script>
+
+    <br />
+
+    <label for="input_checkers_cell_width"> iteration number</label> <input type="text" id="input_checkers_cell_width"
+        onkeyup="update_checkers_cell_width()" style="background-color:MediumPurple"><br>
+
+    <br/>
+
+    <div id='map' style='width: 400px; height: 300px;'></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYWxla3NlaS1hLXIiLCJhIjoiY2xpeWNkbDZ0MGd4bjNkbzFxYzZzOTRjaSJ9.OTXez9jXEokdDh5WEL8lIQ';
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v12',
+            center: [-74.5, 40],
+            zoom: 9,
+        });
+    </script>
+</body>
+
+</html>

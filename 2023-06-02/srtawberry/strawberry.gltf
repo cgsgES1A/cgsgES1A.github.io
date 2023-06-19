@@ -1,0 +1,167 @@
+{
+    "asset" : {
+        "generator" : "Khronos glTF Blender I/O v1.6.16",
+        "version" : "2.0"
+    },
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                0
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "mesh" : 0,
+            "name" : "strawberry",
+            "rotation" : [
+                -0.4168415665626526,
+                -0.39769691228866577,
+                0.580659806728363,
+                0.5752517580986023
+            ],
+            "scale" : [
+                1.2248958349227905,
+                1.2248954772949219,
+                1.2248954772949219
+            ]
+        }
+    ],
+    "materials" : [
+        {
+            "doubleSided" : true,
+            "name" : "Strawberry",
+            "normalTexture" : {
+                "index" : 0
+            },
+            "pbrMetallicRoughness" : {
+                "baseColorTexture" : {
+                    "index" : 1
+                },
+                "metallicFactor" : 0,
+                "metallicRoughnessTexture" : {
+                    "index" : 2
+                }
+            }
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "strawberry",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 0,
+                        "NORMAL" : 1,
+                        "TEXCOORD_0" : 2
+                    },
+                    "indices" : 3,
+                    "material" : 0
+                }
+            ]
+        }
+    ],
+    "textures" : [
+        {
+            "sampler" : 0,
+            "source" : 0
+        },
+        {
+            "sampler" : 0,
+            "source" : 1
+        },
+        {
+            "sampler" : 0,
+            "source" : 2
+        }
+    ],
+    "images" : [
+        {
+            "mimeType" : "image/jpeg",
+            "name" : "Strawberry_Normal",
+            "uri" : "Strawberry_Normal.jpg"
+        },
+        {
+            "mimeType" : "image/jpeg",
+            "name" : "Strawberry_basecolor",
+            "uri" : "Strawberry_basecolor.jpg"
+        },
+        {
+            "mimeType" : "image/png",
+            "name" : "Strawberry_Roughness",
+            "uri" : "Strawberry_Roughness.png"
+        }
+    ],
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5126,
+            "count" : 93157,
+            "max" : [
+                5.787756443023682,
+                1.956291913986206,
+                2.004631519317627
+            ],
+            "min" : [
+                0.013191461563110352,
+                -2.0039727687835693,
+                -1.9556330442428589
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5126,
+            "count" : 93157,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 2,
+            "componentType" : 5126,
+            "count" : 93157,
+            "type" : "VEC2"
+        },
+        {
+            "bufferView" : 3,
+            "componentType" : 5125,
+            "count" : 389166,
+            "type" : "SCALAR"
+        }
+    ],
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 1117884,
+            "byteOffset" : 0
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 1117884,
+            "byteOffset" : 1117884
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 745256,
+            "byteOffset" : 2235768
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 1556664,
+            "byteOffset" : 2981024
+        }
+    ],
+    "samplers" : [
+        {
+            "magFilter" : 9729,
+            "minFilter" : 9987
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 4537688,
+            "uri" : "untitled.bin"
+        }
+    ]
+}
