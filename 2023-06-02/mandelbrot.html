@@ -527,7 +527,7 @@
                         vertices = new Float32Array(data.slice(VBufView.byteOffset, VBufView.byteOffset + VBufView.byteLength));
                         normals = new Float32Array(data.slice(NBufView.byteOffset, NBufView.byteOffset + NBufView.byteLength));
                         texcoords = new Float32Array(data.slice(TCBufView.byteOffset, TCBufView.byteOffset + TCBufView.byteLength));
-                        indices = new Uint32Array(data.slice(IBufView.byteOffset, IBufView.byteOffset + IBufView.byteLength));
+                        indices = new Uint16Array(data.slice(IBufView.byteOffset, IBufView.byteOffset + IBufView.byteLength));
                         NumOfIndex = indices.length;
                         //console.log(indices);
                     }
@@ -590,64 +590,7 @@
 
 
 <body onload="webGLStart();">
-    <canvas id="wegl-canvas" style="border: none;" width="500" height="500" onmousemove="mouseMove(event)"
-        onmousedown="mouseDown()" onmouseup="mouseUp()" wheel="mouseWheel()"></canvas>
-
-    <script>
-        var flag = 0;
-
-        document.getElementById("wegl-canvas").addEventListener("mousedown", mouseDown);
-        document.getElementById("wegl-canvas").addEventListener("mouseup", mouseUp);
-        document.getElementById("wegl-canvas").addEventListener("mousemove", mouseMove);
-        document.getElementById("wegl-canvas").addEventListener("wheel", mouseWheel);
-
-        function mouseMove(e) {
-            if (flag) {
-                delx += (e.clientX - oldx) / 250.0 * zoom_value;
-                dely += (e.clientY - oldy) / 250.0 * zoom_value;
-                oldx = e.clientX;
-                oldy = e.clientY;
-            }
-        }
-        function mouseDown(e) {
-            flag = 1;
-            oldx = e.clientX;
-            oldy = e.clientY;
-        }
-        function mouseUp(e) {
-            flag = 0;
-        }
-        function mouseWheel(e) {
-            var olddx = delx;
-            var olddy = dely;
-            delx -= (e.clientX - oldx) / 250.0 * zoom_value;
-            dely -= (e.clientY - oldy) / 250.0 * zoom_value;
-            if (e.deltaY >= 0)
-                zoom_value *= 1.1;
-            if (e.deltaY < 0)
-                zoom_value /= 1.1;
-            delx += (e.clientX - oldx) / 250.0 * zoom_value;
-            dely += (e.clientY - oldy) / 250.0 * zoom_value;
-        }
-    </script>
-
-    <br />
-
-    <label for="input_checkers_cell_width"> iteration number</label> <input type="text" id="input_checkers_cell_width"
-        onkeyup="update_checkers_cell_width()" style="background-color:MediumPurple"><br>
-
-    <br/>
-
-    <div id='map' style='width: 400px; height: 300px;'></div>
-    <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoiYWxla3NlaS1hLXIiLCJhIjoiY2xpeWNkbDZ0MGd4bjNkbzFxYzZzOTRjaSJ9.OTXez9jXEokdDh5WEL8lIQ';
-        const map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v12',
-            center: [-74.5, 40],
-            zoom: 9,
-        });
-    </script>
+    <canvas id="wegl-canvas" style="border: none;" width="500" height="500"></canvas>
 </body>
 
 </html>
